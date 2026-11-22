@@ -304,9 +304,7 @@
 </div>
 
 <script>
-// Base Data containing 50 questions
-const baseQuizData = [
-    // ================= 75 NOTES-BASED EASY TO MEDIUM MCQS (Q1 - Q75) =================
+// ================= 75 NOTES-BASED EASY TO MEDIUM MCQS (Q1 - Q75) =================
     // 1
     {
         qE: "Into how many phases does matter exist according to modern classification?",
@@ -320,45 +318,45 @@ const baseQuizData = [
     {
         qE: "Which state of matter has a definite volume but no definite shape?",
         qT: "நிலையான கன அளவு ஆனால் நிலையான வடிவம் இல்லாத பருப்பொருளின் நிலை எது?",
-        oE: ["Solid", "Liquid", "Gas", "Plasma"],
-        oT: ["திண்மம்", "திரவம்", "வாயு", "பிளாஸ்மா"],
-        a: 1,
+        oE: ["Liquid", "Solid", "Gas", "Plasma"],
+        oT: ["திரவம்", "திண்மம்", "வாயு", "பிளாஸ்மா"],
+        a: 0,
         exp: "Liquids have a definite volume but no definite shape; they take the shape of the vessel in which they are kept and can flow."
     },
     // 3
     {
         qE: "Which gases are contained in a fluorescent tube?",
         qT: "ஒளிரும் குழாயில் (Fluorescent tube) எந்த வாயுக்கள் உள்ளன?",
-        oE: ["Hydrogen and nitrogen", "Helium and neon", "Oxygen and argon", "Carbon dioxide and neon"],
-        oT: ["ஹைட்ரஜன் மற்றும் நைட்ரஜன்", "ஹீலியம் மற்றும் நியான்", "ஆக்ஸிஜன் மற்றும் ஆர்கான்", "கார்பன் டை ஆக்சைடு மற்றும் நியான்"],
-        a: 1,
+        oE: ["Hydrogen and nitrogen", "Carbon dioxide and neon", "Oxygen and argon", "Helium and neon"],
+        oT: ["ஹைட்ரஜன் மற்றும் நைட்ரஜன்", "கார்பன் டை ஆக்சைடு மற்றும் நியான்", "ஆக்ஸிஜன் மற்றும் ஆர்கான்", "ஹீலியம் மற்றும் நியான்"],
+        a: 3,
         exp: "A fluorescent tube contains helium gas and neon gas, while a sign bulb contains neon gas."
     },
     // 4
     {
         qE: "Which state of matter is made up of free electrons and positively charged ions called cations?",
         qT: "கட்டற்ற எலக்ட்ரான்கள் மற்றும் நேர்மின் அயனிகளால் ஆன பருப்பொருளின் நிலை எது?",
-        oE: ["Gas", "Liquid", "Plasma", "Bose-Einstein Condensate"],
-        oT: ["வாயு", "திரவம்", "பிளாஸ்மா", "போஸ்-ஐன்ஸ்டீன் சுருக்கம்"],
-        a: 2,
+        oE: ["Gas", "Plasma", "Liquid", "Bose-Einstein Condensate"],
+        oT: ["வாயு", "பிளாஸ்மா", "திரவம்", "போஸ்-ஐன்ஸ்டீன் சுருக்கம்"],
+        a: 1,
         exp: "Plasma is the fourth state of matter made by heating a gas until electrons escape the nuclei, forming free electrons and positively charged ions."
     },
     // 5
     {
         qE: "Bose-Einstein Condensate is formed by cooling bosons to temperatures very near which value?",
         qT: "போஸ்-ஐன்ஸ்டீன் சுருக்கம் என்பது போசான்களை எந்த வெப்பநிலைக்கு மிக அருகில் குளிர்விப்பதன் மூலம் உருவாகிறது?",
-        oE: ["0°C", "-100°C", "-273.15°C", "-373.15°C"],
-        oT: ["0°C", "-100°C", "-273.15°C", "-373.15°C"],
-        a: 2,
+        oE: ["-273.15°C", "-100°C", "0°C", "-373.15°C"],
+        oT: ["-273.15°C", "-100°C", "0°C", "-373.15°C"],
+        a: 0,
         exp: "Bose-Einstein Condensate is the fifth state of matter formed by cooling bosons very near absolute zero, which is 0 Kelvin or -273.15°C."
     },
     // 6
     {
         qE: "The process of melting, where a solid changes into a liquid state, is known as what?",
         qT: "திண்ம நிலை திரவ நிலையாக மாறும் உருகுதல் செயல்முறை எவ்வாறு அழைக்கப்படுகிறது?",
-        oE: ["Condensation", "Fusion", "Sublimation", "Evaporation"],
-        oT: ["ஆவி சுருங்குதல்", "உருகுதல் (Fusion)", "பதங்கமாதல்", "ஆவியாதல்"],
-        a: 1,
+        oE: ["Condensation", "Evaporation", "Sublimation", "Fusion"],
+        oT: ["ஆவி சுருங்குதல்", "ஆவியாதல்", "பதங்கமாதல்", "உருகுதல் (Fusion)"],
+        a: 3,
         exp: "The change of a solid state into a liquid state is called fusion."
     },
     // 7
@@ -383,9 +381,9 @@ const baseQuizData = [
     {
         qE: "Which of the following is an example of a substance that undergoes sublimation?",
         qT: "பின்வருவனவற்றில் பதங்கமாதலுக்கு உட்படும் பொருளுக்கு உதாரணம் எது?",
-        oE: ["Common salt", "Sugar", "Ammonium chloride", "Iron"],
-        oT: ["சாதாரண உப்பு", "சர்க்கரை", "அம்மோனியம் குளோரைடு", "இரும்பு"],
-        a: 2,
+        oE: ["Common salt", "Sugar", "Iron", "Ammonium chloride"],
+        oT: ["சாதாரண உப்பு", "சர்க்கரை", "இரும்பு", "அம்மோனியம் குளோரைடு"],
+        a: 3,
         exp: "Camphor, naphthalene, ammonium chloride, and iodine are classic examples of sublimates."
     },
     // 10
@@ -401,18 +399,18 @@ const baseQuizData = [
     {
         qE: "Why does food cook faster inside a pressure cooker?",
         qT: "பிரஷர் குக்கரில் உணவு ஏன் விரைவாக வேகுகிறது?",
-        oE: ["Low pressure lowers the boiling point", "High pressure increases the boiling point of water", "It eliminates latent heat of fusion", "It prevents vapourisation"],
-        oT: ["குறைந்த அழுத்தம் கொதிநிலையைக் குறைக்கிறது", "அதிக அழுத்தம் நீரின் கொதிநிலையை உயர்த்துகிறது", "இது உருகுதலின் உள்ளுறை வெப்பத்தை நீக்குகிறது", "இது ஆவியாக்கலைத் தடுக்கிறது"],
-        a: 1,
+        oE: ["High pressure increases the boiling point of water", "Low pressure lowers the boiling point", "It eliminates latent heat of fusion", "It prevents vapourisation"],
+        oT: ["அதிக அழுத்தம் நீரின் கொதிநிலையை உயர்த்துகிறது", "குறைந்த அழுத்தம் கொதிநிலையைக் குறைக்கிறது", "இது உருகுதலின் உள்ளுறை வெப்பத்தை நீக்குகிறது", "இது ஆவியாக்கலைத் தடுக்கிறது"],
+        a: 0,
         exp: "Inside a pressure cooker, the boiling point of water rises due to high pressure, so less time is required to cook food."
     },
     // 12
     {
         qE: "What happens to the boiling point of a liquid in the presence of impurities?",
         qT: "மாசுக்கள் இருக்கும்போது ஒரு திரவத்தின் கொதிநிலை என்னவாகும்?",
-        oE: ["It decreases", "It increases", "It stays unchanged", "It drops to 0°C"],
-        oT: ["குறையும்", "அதிகரிக்கும்", "மாறாது", "0°C ஆகக் குறையும்"],
-        a: 1,
+        oE: ["It decreases", "It stays unchanged", "It increases", "It drops to 0°C"],
+        oT: ["குறையும்", "மாறாது", "அதிகரிக்கும்", "0°C ஆகக் குறையும்"],
+        a: 2,
         exp: "The boiling point of a liquid increases in the presence of impurities."
     },
     // 13
@@ -437,36 +435,36 @@ const baseQuizData = [
     {
         qE: "What does the word 'latent' mean in the term 'latent heat'?",
         qT: "'உள்ளுறை வெப்பம்' என்பதில் 'லேட்டன்ட்' (Latent) என்ற சொல்லின் பொருள் என்ன?",
-        oE: ["Extreme", "Hidden", "Surface", "Kinetic"],
-        oT: ["அதிகபட்சம்", "மறைந்திருக்கும்", "மேற்பரப்பு", "இயக்க"],
-        a: 1,
+        oE: ["Extreme", "Kinetic", "Surface", "Hidden"],
+        oT: ["அதிகபட்சம்", "இயக்க", "மேற்பரப்பு", "மறைந்திருக்கும்"],
+        a: 3,
         exp: "The word 'latent' means hidden. Latent heat is absorbed or released during a change of state at constant temperature."
     },
     // 16
     {
         qE: "Why do particles in water at 0°C have more energy than particles in ice at the same temperature?",
         qT: "0°C வெப்பநிலையில் உள்ள பனிக்கட்டித் துகள்களை விட அதே வெப்பநிலையில் உள்ள நீர்த் துகள்கள் ஏன் அதிக ஆற்றலைக் கொண்டுள்ளன?",
-        oE: ["Due to atmospheric pressure", "Due to latent heat of fusion", "Due to latent heat of vapourisation", "Due to sublimation"],
-        oT: ["வளிமண்டல அழுத்தத்தின் காரணமாக", "உருகுதலின் உள்ளுறை வெப்பத்தின் காரணமாக", "ஆவியாதலின் உள்ளுறை வெப்பத்தின் காரணமாக", "பதங்கமாதலின் காரணமாக"],
-        a: 1,
+        oE: ["Due to latent heat of fusion", "Due to atmospheric pressure", "Due to latent heat of vapourisation", "Due to sublimation"],
+        oT: ["உருகுதலின் உள்ளுறை வெப்பத்தின் காரணமாக", "வளிமண்டல அழுத்தத்தின் காரணமாக", "ஆவியாதலின் உள்ளுறை வெப்பத்தின் காரணமாக", "பதங்கமாதலின் காரணமாக"],
+        a: 0,
         exp: "Water at 0°C has absorbed the latent heat of fusion needed to convert solid ice into liquid water at the same temperature."
     },
     // 17
     {
         qE: "Why does the temperature of a boiling liquid remain constant during boiling?",
         qT: "ஒரு திரவம் கொதிக்கும்போது அதன் வெப்பநிலை ஏன் மாறாமல் நிலையாக உள்ளது?",
-        oE: ["Due to latent heat of fusion", "Due to latent heat of vapourisation", "Due to condensation", "Due to low pressure"],
-        oT: ["உருகுதலின் உள்ளுறை வெப்பத்தால்", "ஆவியாதலின் உள்ளுறை வெப்பத்தால்", "ஆவி சுருங்குதலால்", "குறைந்த அழுத்தத்தால்"],
-        a: 1,
+        oE: ["Due to latent heat of vapourisation", "Due to latent heat of fusion", "Due to condensation", "Due to low pressure"],
+        oT: ["ஆவியாதலின் உள்ளுறை வெப்பத்தால்", "உருகுதலின் உள்ளுறை வெப்பத்தால்", "ஆவி சுருங்குதலால்", "குறைந்த அழுத்தத்தால்"],
+        a: 0,
         exp: "During boiling, the heat supplied is used as latent heat of vapourisation to change the state from liquid to gas without raising the temperature."
     },
     // 18
     {
         qE: "Which gas law states that the volume of a gas varies inversely with pressure at constant temperature?",
         qT: "மாறா வெப்பநிலையில் ஒரு வாயுவின் கன அளவு அதன் அழுத்தத்திற்கு எதிர்விகிதத்தில் இருக்கும் என்று கூறும் விதி எது?",
-        oE: ["Charles's Law", "Boyle's Law", "Gay-Lussac's Law", "Avogadro's Law"],
-        oT: ["சார்லஸ் விதி", "பாயில் விதி", "கே-லூசாக் விதி", "அவகாட்ரோ விதி"],
-        a: 1,
+        oE: ["Charles's Law", "Gay-Lussac's Law", "Boyle's Law", "Avogadro's Law"],
+        oT: ["சார்லஸ் விதி", "கே-லூசாக் விதி", "பாயில் விதி", "அவகாட்ரோ விதி"],
+        a: 2,
         exp: "Boyle's Law (Pressure-Volume Law) states that V is inversely proportional to P at constant temperature and mass (PV = Constant)."
     },
     // 19
@@ -482,36 +480,36 @@ const baseQuizData = [
     {
         qE: "According to Gay-Lussac's Law, which physical quantity is held constant while pressure varies directly with Kelvin temperature?",
         qT: "கே-லூசாக் விதியின்படி, அழுத்தம் கெல்வின் வெப்பநிலைக்கு நேர்விகிதத்தில் இருக்கும்போது எந்த இயற்பியல் அளவு மாறாமல் இருக்கும்?",
-        oE: ["Pressure", "Temperature", "Volume", "Density"],
-        oT: ["அழுத்தம்", "வெப்பநிலை", "கன அளவு", "அடர்த்தி"],
-        a: 2,
+        oE: ["Pressure", "Temperature", "Density", "Volume"],
+        oT: ["அழுத்தம்", "வெப்பநிலை", "அடர்த்தி", "கன அளவு"],
+        a: 3,
         exp: "Gay-Lussac's Law (Pressure-Temperature Law) states that the pressure of a gas held at constant volume is directly proportional to its Kelvin temperature."
     },
     // 21
     {
         qE: "Which law describes the relationship between the volume of a gas and its amount in moles at constant temperature and pressure?",
         qT: "மாறா வெப்பநிலை மற்றும் அழுத்தத்தில் ஒரு வாயுவின் கன அளவுக்கும் அதன் மோல் எண்ணிக்கைக்கும் உள்ள தொடர்பை விளக்கும் விதி எது?",
-        oE: ["Boyle's Law", "Charles's Law", "Avogadro's Law", "Graham's Law"],
-        oT: ["பாயில் விதி", "சார்லஸ் விதி", "அவகாட்ரோ விதி", "கிரஹாம் விதி"],
-        a: 2,
+        oE: ["Boyle's Law", "Charles's Law", "Graham's Law", "Avogadro's Law"],
+        oT: ["பாயில் விதி", "சார்லஸ் விதி", "கிரஹாம் விதி", "அவகாட்ரோ விதி"],
+        a: 3,
         exp: "Avogadro's Law (Volume-Amount Law) states that V is directly proportional to n (number of moles) at constant temperature and pressure."
     },
     // 22
     {
         qE: "According to Graham's Law of Diffusion, the rate of diffusion of a gas is inversely proportional to what?",
         qT: "கிரஹாம் விரவல் விதியின்படி, ஒரு வாயுவின் விரவல் வீதம் எதற்கு எதிர்விகிதத்தில் இருக்கும்?",
-        oE: ["Molar mass", "Square of molar mass", "Square root of molar mass", "Cube root of molar mass"],
-        oT: ["மோலார் நிறை", "மோலார் நிறையின் வர்க்கம்", "மோலார் நிறையின் வர்க்கமூலம்", "மோலார் நிறையின் கனமூலம்"],
-        a: 2,
+        oE: ["Square root of molar mass", "Square of molar mass", "Molar mass", "Cube root of molar mass"],
+        oT: ["மோலார் நிறையின் வர்க்கமூலம்", "மோலார் நிறையின் வர்க்கம்", "மோலார் நிறை", "மோலார் நிறையின் கனமூலம்"],
+        a: 0,
         exp: "Graham's Law states that the rate of diffusion or effusion (r) is inversely proportional to the square root of its molar mass (M)."
     },
     // 23
     {
         qE: "The movement of a gas through a tiny hole into an open chamber is specifically called what?",
         qT: "ஒரு சிறிய துளை வழியாக வாயு திறந்த அறைக்குள் நகரும் நிகழ்வு எவ்வாறு அழைக்கப்படுகிறது?",
-        oE: ["Diffusion", "Effusion", "Condensation", "Dialysis"],
-        oT: ["விரவல்", "வெளிப்பாய்தல் (Effusion)", "ஆவி சுருங்குதல்", "டயாலிசிஸ்"],
-        a: 1,
+        oE: ["Diffusion", "Condensation", "Effusion", "Dialysis"],
+        oT: ["விரவல்", "ஆவி சுருங்குதல்", "வெளிப்பாய்தல் (Effusion)", "டயாலிசிஸ்"],
+        a: 2,
         exp: "Diffusion is the spreading of a gas throughout a volume, while effusion is the movement of a gas through a tiny hole into an open chamber."
     },
     // 24
@@ -527,27 +525,27 @@ const baseQuizData = [
     {
         qE: "Out of the 118 elements known at present, how many occur naturally?",
         qT: "தற்போது அறியப்பட்டுள்ள 118 தனிமங்களில் எத்தனை தனிமங்கள் இயற்கையாகக் கிடைக்கின்றன?",
-        oE: ["88", "90", "92", "94"],
-        oT: ["88", "90", "92", "94"],
-        a: 3,
+        oE: ["88", "94", "92", "90"],
+        oT: ["88", "94", "92", "90"],
+        a: 1,
         exp: "Out of 118 known elements at present, 94 are natural."
     },
     // 26
     {
         qE: "Which two elements are liquid at room temperature?",
         qT: "அறை வெப்பநிலையில் திரவ நிலையில் உள்ள இரண்டு தனிமங்கள் எவை?",
-        oE: ["Mercury and iodine", "Mercury and bromine", "Sodium and bromine", "Gallium and chlorine"],
-        oT: ["பாதரசம் மற்றும் அயோடின்", "பாதரசம் மற்றும் புரோமின்", "சோடியம் மற்றும் புரோமின்", "காலியம் மற்றும் குளோரின்"],
-        a: 1,
+        oE: ["Mercury and iodine", "Gallium and chlorine", "Sodium and bromine", "Mercury and bromine"],
+        oT: ["பாதரசம் மற்றும் அயோடின்", "காலியம் மற்றும் குளோரின்", "சோடியம் மற்றும் புரோமின்", "பாதரசம் மற்றும் புரோமின்"],
+        a: 3,
         exp: "Mercury (Hg) and bromine (Br2) are the two elements that exist in the liquid state at room temperature."
     },
     // 27
     {
         qE: "Which is the correct descending order of abundance of elements in the Earth's crust?",
         qT: "பூமியின் மேலோட்டில் உள்ள தனிமங்களின் அளவின் சரியான இறங்குவரிசை எது?",
-        oE: ["Oxygen > Aluminium > Silicon > Iron", "Oxygen > Silicon > Aluminium > Iron", "Silicon > Oxygen > Iron > Aluminium", "Oxygen > Carbon > Silicon > Iron"],
-        oT: ["ஆக்ஸிஜன் > அலுமினியம் > சிலிக்கான் > இரும்பு", "ஆக்ஸிஜன் > சிலிக்கான் > அலுமினியம் > இரும்பு", "சிலிக்கான் > ஆக்ஸிஜன் > இரும்பு > அலுமினியம்", "ஆக்ஸிஜன் > கார்பன் > சிலிக்கான் > இரும்பு"],
-        a: 1,
+        oE: ["Oxygen > Silicon > Aluminium > Iron", "Oxygen > Aluminium > Silicon > Iron", "Silicon > Oxygen > Iron > Aluminium", "Oxygen > Carbon > Silicon > Iron"],
+        oT: ["ஆக்ஸிஜன் > சிலிக்கான் > அலுமினியம் > இரும்பு", "ஆக்ஸிஜன் > அலுமினியம் > சிலிக்கான் > இரும்பு", "சிலிக்கான் > ஆக்ஸிஜன் > இரும்பு > அலுமினியம்", "ஆக்ஸிஜன் > கார்பன் > சிலிக்கான் > இரும்பு"],
+        a: 0,
         exp: "The order of abundance of elements in the Earth's crust is Oxygen > Silicon > Aluminium > Iron > Calcium."
     },
     // 28
@@ -563,9 +561,9 @@ const baseQuizData = [
     {
         qE: "Who proposed the Law of Conservation of Mass, stating that matter can neither be created nor destroyed?",
         qT: "பருப்பொருளை ஆக்கவோ அழிக்கவோ முடியாது என்ற நிறை அழிவின்மை விதியை வழங்கியவர் யார்?",
-        oE: ["John Dalton", "Lavoisier", "Avogadro", "Boyle"],
-        oT: ["ஜான் டால்டன்", "லவாய்சியர்", "அவகாட்ரோ", "பாயில்"],
-        a: 1,
+        oE: ["John Dalton", "Avogadro", "Lavoisier", "Boyle"],
+        oT: ["ஜான் டால்டன்", "அவகாட்ரோ", "லவாய்சியர்", "பாயில்"],
+        a: 2,
         exp: "The Law of Conservation of Mass was given by Lavoisier."
     },
     // 30
@@ -581,18 +579,18 @@ const baseQuizData = [
     {
         qE: "What is the smallest particle of an element or compound that is capable of independent existence and shows all its properties?",
         qT: "தனித்து இயங்கக்கூடிய மற்றும் ஒரு தனிமம் அல்லது சேர்மத்தின் அனைத்துப் பண்புகளையும் வெளிப்படுத்தும் மிகச்சிறிய துகள் எது?",
-        oE: ["Atom", "Molecule", "Proton", "Electron"],
-        oT: ["அணு", "மூலக்கூறு", "புரோட்டான்", "எலக்ட்ரான்"],
-        a: 1,
+        oE: ["Atom", "Electron", "Proton", "Molecule"],
+        oT: ["அணு", "எலக்ட்ரான்", "புரோட்டான்", "மூலக்கூறு"],
+        a: 3,
         exp: "A molecule is a group of two or more chemically bonded atoms capable of independent existence and exhibiting all properties of the substance."
     },
     // 32
     {
         qE: "What kind of change occurs when a piece of paper is cut into four square pieces?",
         qT: "ஒரு காகிதத் துண்டை நான்கு சதுரத் துண்டுகளாக வெட்டும்போது எந்த வகையான மாற்றம் நிகழ்கிறது?",
-        oE: ["Chemical change", "Physical change", "Nuclear change", "Coagulation"],
-        oT: ["வேதியியல் மாற்றம்", "இயற்பியல் மாற்றம்", "அணுக்கரு மாற்றம்", "கூழ்மத் திரிதல்"],
-        a: 1,
+        oE: ["Physical change", "Chemical change", "Nuclear change", "Coagulation"],
+        oT: ["இயற்பியல் மாற்றம்", "வேதியியல் மாற்றம்", "அணுக்கரு மாற்றம்", "கூழ்மத் திரிதல்"],
+        a: 0,
         exp: "Cutting paper changes only its shape and size without forming any new substance, so it is a physical change."
     },
     // 33
@@ -608,18 +606,18 @@ const baseQuizData = [
     {
         qE: "What is the particle size range of a colloidal solution?",
         qT: "ஒரு கூழ்மக் கரைசலின் துகள் அளவு வரம்பு என்ன?",
-        oE: ["Less than 1 nm", "1 nm to 1000 nm", "Greater than 1000 nm", "Greater than 10000 nm"],
-        oT: ["1 nm-க்கு குறைவானது", "1 nm முதல் 1000 nm வரை", "1000 nm-க்கு அதிகமானது", "10000 nm-க்கு அதிகமானது"],
-        a: 1,
+        oE: ["Less than 1 nm", "Greater than 10000 nm", "Greater than 1000 nm", "1 nm to 1000 nm"],
+        oT: ["1 nm-க்கு குறைவானது", "10000 nm-க்கு அதிகமானது", "1000 nm-க்கு அதிகமானது", "1 nm முதல் 1000 nm வரை"],
+        a: 3,
         exp: "Colloidal solutions are heterogeneous mixtures with particle sizes ranging between 1 nm and 1000 nm."
     },
     // 35
     {
         qE: "What is the appearance of a colloidal solution compared to a true solution and a suspension?",
         qT: "உண்மைக் கரைசல் மற்றும் தொங்கலுடன் ஒப்பிடும்போது கூழ்மக் கரைசலின் தோற்றம் எவ்வாறு இருக்கும்?",
-        oE: ["Transparent", "Translucent", "Opaque", "Crystalline"],
-        oT: ["ஒளி ஊடுருவும்", "பகுதி ஒளி ஊடுருவும்", "ஒளி ஊடுருவாத", "படிக வடிவ"],
-        a: 1,
+        oE: ["Transparent", "Opaque", "Translucent", "Crystalline"],
+        oT: ["ஒளி ஊடுருவும்", "ஒளி ஊடுருவாத", "பகுதி ஒளி ஊடுருவும்", "படிக வடிவ"],
+        a: 2,
         exp: "True solutions are transparent, colloidal solutions are translucent, and suspensions are opaque."
     },
     // 36
@@ -635,18 +633,18 @@ const baseQuizData = [
     {
         qE: "Which property of colloidal particles explains their diffusion behaviour through filter paper and parchment paper?",
         qT: "வடிகட்டித் தாள் மற்றும் பார்ச்மென்ட் தாள் வழியாக கூழ்மத் துகள்களின் ஊடுருவல் பண்பு எது?",
-        oE: ["Pass through both rapidly", "Pass through filter paper but not parchment paper", "Pass through parchment paper but not filter paper", "Do not pass through either"],
-        oT: ["இரண்டின் வழியாகவும் வேகமாகச் செல்லும்", "வடிகட்டித் தாள் வழியாகச் செல்லும் ஆனால் பார்ச்மென்ட் தாள் வழியாகச் செல்லாது", "பார்ச்மென்ட் தாள் வழியாகச் செல்லும் ஆனால் வடிகட்டித் தாள் வழியாகச் செல்லாது", "எதன் வழியாகவும் செல்லாது"],
-        a: 1,
+        oE: ["Pass through both rapidly", "Pass through parchment paper but not filter paper", "Pass through filter paper but not parchment paper", "Do not pass through either"],
+        oT: ["இரண்டின் வழியாகவும் வேகமாகச் செல்லும்", "பார்ச்மென்ட் தாள் வழியாகச் செல்லும் ஆனால் வடிகட்டித் தாள் வழியாகச் செல்லாது", "வடிகட்டித் தாள் வழியாகச் செல்லும் ஆனால் பார்ச்மென்ட் தாள் வழியாகச் செல்லாது", "எதன் வழியாகவும் செல்லாது"],
+        a: 2,
         exp: "Colloidal particles pass through ordinary filter paper but cannot pass through parchment paper."
     },
     // 38
     {
         qE: "Why does the sky appear blue due to suspended dust particles in the air?",
         qT: "காற்றில் மிதக்கும் தூசித் துகள்களால் வானம் ஏன் நீல நிறமாகத் தோன்றுகிறது?",
-        oE: ["Reflection of light", "Scattering of light", "Refraction of light", "Absorption of light"],
-        oT: ["ஒளி எதிரொளிப்பு", "ஒளிச் சிதறல்", "ஒளி விலகல்", "ஒளி உறிஞ்சுதல்"],
-        a: 1,
+        oE: ["Scattering of light", "Reflection of light", "Refraction of light", "Absorption of light"],
+        oT: ["ஒளிச் சிதறல்", "ஒளி எதிரொளிப்பு", "ஒளி விலகல்", "ஒளி உறிஞ்சுதல்"],
+        a: 0,
         exp: "The blue colour of the sky is due to the scattering of light by dust particles suspended in the air."
     },
     // 39
@@ -662,9 +660,9 @@ const baseQuizData = [
     {
         qE: "By which method are colloidal solutions purified, a principle also used in artificial kidney machines to purify blood?",
         qT: "செயற்கை சிறுநீரக இயந்திரத்தில் இரத்தத்தைச் சுத்திகரிக்கவும், கூழ்மக் கரைசல்களைத் தூய்மைப்படுத்தவும் பயன்படும் முறை எது?",
-        oE: ["Distillation", "Dialysis", "Sublimation", "Evaporation"],
-        oT: ["காய்ச்சி வடித்தல்", "டயாலிசிஸ்", "பதங்கமாதல்", "ஆவியாதல்"],
-        a: 1,
+        oE: ["Distillation", "Evaporation", "Sublimation", "Dialysis"],
+        oT: ["காய்ச்சி வடித்தல்", "ஆவியாதல்", "பதங்கமாதல்", "டயாலிசிஸ்"],
+        a: 3,
         exp: "Colloidal solutions are purified by dialysis, which is also used for blood purification in artificial kidney machines."
     },
     // 41
@@ -680,36 +678,36 @@ const baseQuizData = [
     {
         qE: "Fog, clouds, and mist are examples of which type of colloid?",
         qT: "மூடுபனி, மேகங்கள் மற்றும் பனித்துளி ஆகியவை எந்த வகை கூழ்மத்திற்கு உதாரணங்கள்?",
-        oE: ["Foam", "Emulsion", "Aerosol", "Gel"],
-        oT: ["நுரை", "பால்மம்", "ஏரோசால்", "ஜெல்"],
-        a: 2,
+        oE: ["Foam", "Emulsion", "Gel", "Aerosol"],
+        oT: ["நுரை", "பால்மம்", "ஜெல்", "ஏரோசால்"],
+        a: 3,
         exp: "Fog, clouds, and mist are Aerosols, where the dispersed phase is liquid and the dispersion medium is gas."
     },
     // 43
     {
         qE: "In smoke and automobile exhaust, what are the dispersed phase and dispersion medium respectively?",
         qT: "புகை மற்றும் வாகனப் புகையில், பரவல் நிலைமை மற்றும் பரவல் ஊடகம் முறையே எவை?",
-        oE: ["Liquid in gas", "Solid in gas", "Gas in solid", "Solid in liquid"],
-        oT: ["வாயுவில் திரவம்", "வாயுவில் திண்மம்", "திண்மத்தில் வாயு", "திரவத்தில் திண்மம்"],
-        a: 1,
+        oE: ["Liquid in gas", "Gas in solid", "Solid in gas", "Solid in liquid"],
+        oT: ["வாயுவில் திரவம்", "திண்மத்தில் வாயு", "வாயுவில் திண்மம்", "திரவத்தில் திண்மம்"],
+        a: 2,
         exp: "Smoke and automobile exhaust are solid aerosols consisting of solid particles dispersed in gas."
     },
     // 44
     {
         qE: "Milk and face-cream belong to which category of colloids?",
         qT: "பால் மற்றும் முகக் கிரீம் ஆகியவை எந்த வகை கூழ்மத்தைச் சேர்ந்தவை?",
-        oE: ["Sol", "Gel", "Emulsion", "Foam"],
-        oT: ["சால்", "ஜெல்", "பால்மம்", "நுரை"],
-        a: 2,
+        oE: ["Emulsion", "Gel", "Sol", "Foam"],
+        oT: ["பால்மம்", "ஜெல்", "சால்", "நுரை"],
+        a: 0,
         exp: "Milk and face-cream are Emulsions, in which both the dispersed phase and dispersion medium are liquids."
     },
     // 45
     {
         qE: "Shaving cream is an example of which type of colloid?",
         qT: "ஷேவிங் கிரீம் எந்த வகை கூழ்மத்திற்கு உதாரணம்?",
-        oE: ["Emulsion", "Foam", "Sol", "Gel"],
-        oT: ["பால்மம்", "நுரை", "சால்", "ஜெல்"],
-        a: 1,
+        oE: ["Emulsion", "Gel", "Sol", "Foam"],
+        oT: ["பால்மம்", "ஜெல்", "சால்", "நுரை"],
+        a: 3,
         exp: "Shaving cream is a Foam, where gas is dispersed in a liquid dispersion medium."
     },
     // 46
@@ -725,27 +723,27 @@ const baseQuizData = [
     {
         qE: "Jelly, cheese, and butter are examples of which type of colloid?",
         qT: "ஜெல்லி, பாலாடைக்கட்டி மற்றும் வெண்ணெய் ஆகியவை எந்த வகை கூழ்மத்திற்கு உதாரணங்கள்?",
-        oE: ["Foam", "Emulsion", "Gel", "Solid sol"],
-        oT: ["நுரை", "பால்மம்", "ஜெல்", "திண்ம சால்"],
-        a: 2,
+        oE: ["Gel", "Emulsion", "Foam", "Solid sol"],
+        oT: ["ஜெல்", "பால்மம்", "நுரை", "திண்ம சால்"],
+        a: 0,
         exp: "Jelly, cheese, and butter are Gels, where the dispersed phase is liquid and the dispersion medium is solid."
     },
     // 48
     {
         qE: "Coloured gemstones and milky glass belong to which type of colloid?",
         qT: "வண்ண ரத்தினக் கற்கள் மற்றும் பால் கண்ணாடி ஆகியவை எந்த வகை கூழ்மத்தைச் சேர்ந்தவை?",
-        oE: ["Gel", "Foam", "Sol", "Solid sol"],
-        oT: ["ஜெல்", "நுரை", "சால்", "திண்ம சால்"],
-        a: 3,
+        oE: ["Gel", "Solid sol", "Sol", "Foam"],
+        oT: ["ஜெல்", "திண்ம சால்", "சால்", "நுரை"],
+        a: 1,
         exp: "Coloured gemstones and milky glass are Solid sols, where both the dispersed phase and dispersion medium are solid."
     },
     // 49
     {
         qE: "In pumice stone, rubber, and sponge, what is the dispersed phase?",
         qT: "பியூமிஸ் கல், ரப்பர் மற்றும் கடற்பஞ்சு ஆகியவற்றில் பரவல் நிலைமை எது?",
-        oE: ["Solid", "Liquid", "Gas", "Plasma"],
-        oT: ["திண்மம்", "திரவம்", "வாயு", "பிளாஸ்மா"],
-        a: 2,
+        oE: ["Gas", "Liquid", "Solid", "Plasma"],
+        oT: ["வாயு", "திரவம்", "திண்மம்", "பிளாஸ்மா"],
+        a: 0,
         exp: "Foam, rubber, sponge, and pumice are solid foams in which gas is the dispersed phase and solid is the dispersion medium."
     },
     // 50
@@ -761,36 +759,36 @@ const baseQuizData = [
     {
         qE: "Who discovered the positron in 1932?",
         qT: "1932-ஆம் ஆண்டு பாசிட்ரானைக் கண்டுபிடித்தவர் யார்?",
-        oE: ["James Chadwick", "Anderson", "Fermi", "Hideki Yukawa"],
-        oT: ["ஜேம்ஸ் சாட்விக்", "ஆண்டர்சன்", "ஃபெர்மி", "ஹிடெகி யுகாவா"],
-        a: 1,
+        oE: ["James Chadwick", "Hideki Yukawa", "Fermi", "Anderson"],
+        oT: ["ஜேம்ஸ் சாட்விக்", "ஹிடெகி யுகாவா", "ஃபெர்மி", "ஆண்டர்சன்"],
+        a: 3,
         exp: "Anderson discovered the positron in 1932, the same year James Chadwick discovered the neutron."
     },
     // 52
     {
         qE: "Which scientist discovered mesons in 1935?",
         qT: "1935-ஆம் ஆண்டு மீசான்களைக் கண்டுபிடித்த விஞ்ஞானி யார்?",
-        oE: ["Fermi", "Hideki Yukawa", "Segre", "Anderson"],
-        oT: ["ஃபெர்மி", "ஹிடெகி யுகாவா", "செக்ரே", "ஆண்டர்சன்"],
-        a: 1,
+        oE: ["Fermi", "Segre", "Hideki Yukawa", "Anderson"],
+        oT: ["ஃபெர்மி", "செக்ரே", "ஹிடெகி யுகாவா", "ஆண்டர்சன்"],
+        a: 2,
         exp: "Hideki Yukawa discovered mesons in 1935."
     },
     // 53
     {
         qE: "Who discovered the antiproton in 1955?",
         qT: "1955-ஆம் ஆண்டு ஆன்டிபுரோட்டானைக் கண்டுபிடித்தவர் யார்?",
-        oE: ["Fermi", "Segre", "Anderson", "Cork and Association"],
-        oT: ["ஃபெர்மி", "செக்ரே", "ஆண்டர்சன்", "கார்க் மற்றும் குழுவினர்"],
-        a: 1,
+        oE: ["Fermi", "Anderson", "Segre", "Cork and Association"],
+        oT: ["ஃபெர்மி", "ஆண்டர்சன்", "செக்ரே", "கார்க் மற்றும் குழுவினர்"],
+        a: 2,
         exp: "Segre discovered the antiproton in 1955, while Cork and Association discovered the antineutron in 1956."
     },
     // 54
     {
         qE: "Who proposed the atomic theory in 1808 suggesting that atoms are indivisible solid spheres?",
         qT: "அணுக்கள் பிரிக்க முடியாத திண்மக் கோளங்கள் என 1808-இல் அணுக் கொள்கையை முன்மொழிந்தவர் யார்?",
-        oE: ["J. J. Thomson", "John Dalton", "Rutherford", "Niels Bohr"],
-        oT: ["ஜே. ஜே. தாம்சன்", "ஜான் டால்டன்", "ரூதர்ஃபோர்டு", "நீல்ஸ் போர்"],
-        a: 1,
+        oE: ["J. J. Thomson", "Niels Bohr", "Rutherford", "John Dalton"],
+        oT: ["ஜே. ஜே. தாம்சன்", "நீல்ஸ் போர்", "ரூதர்ஃபோர்டு", "ஜான் டால்டன்"],
+        a: 3,
         exp: "John Dalton proposed the atomic theory in 1808 describing atoms as indivisible solid spheres."
     },
     // 55
@@ -806,9 +804,9 @@ const baseQuizData = [
     {
         qE: "Whose nuclear atomic model compared the nucleus to the sun and revolving electrons to planets?",
         qT: "அணுக்கருவை சூரியனுடனும், சுற்றிவரும் எலக்ட்ரான்களைக் கோள்களுடனும் ஒப்பிட்ட அணு மாதிரி யாருடையது?",
-        oE: ["J. J. Thomson", "Rutherford", "Niels Bohr", "John Dalton"],
-        oT: ["ஜே. ஜே. தாம்சன்", "ரூதர்ஃபோர்டு", "நீல்ஸ் போர்", "ஜான் டால்டன்"],
-        a: 1,
+        oE: ["Rutherford", "J. J. Thomson", "Niels Bohr", "John Dalton"],
+        oT: ["ரூதர்ஃபோர்டு", "ஜே. ஜே. தாம்சன்", "நீல்ஸ் போர்", "ஜான் டால்டன்"],
+        a: 0,
         exp: "Rutherford's nuclear atomic model resembled the solar system, with electrons referred to as planetary electrons."
     },
     // 57
@@ -824,9 +822,9 @@ const baseQuizData = [
     {
         qE: "Who modified Bohr's atomic model in 1916 by introducing elliptical orbits and sub-energy levels?",
         qT: "நீள்வட்ட சுற்றுப்பாதைகள் மற்றும் துணை ஆற்றல் மட்டங்களை அறிமுகப்படுத்தி 1916-இல் போரின் மாதிரியை மாற்றியமைத்தவர் யார்?",
-        oE: ["Rutherford", "Sommerfeld", "Burry", "Pauli"],
-        oT: ["ரூதர்ஃபோர்டு", "சோமர்ஃபெல்ட்", "பரி", "பாலி"],
-        a: 1,
+        oE: ["Sommerfeld", "Rutherford", "Burry", "Pauli"],
+        oT: ["சோமர்ஃபெல்ட்", "ரூதர்ஃபோர்டு", "பரி", "பாலி"],
+        a: 0,
         exp: "In 1916, Sommerfeld modified Bohr's model by introducing elliptical orbits and defining sub-energy levels."
     },
     // 59
@@ -842,27 +840,27 @@ const baseQuizData = [
     {
         qE: "Which scientist discovered cathode rays?",
         qT: "கேத்தோடு கதிர்களைக் கண்டுபிடித்த விஞ்ஞானி யார்?",
-        oE: ["Sir Julius Plucker", "Eugen Goldstein", "James Chadwick", "Robert Millikan"],
-        oT: ["சர் ஜூலியஸ் பிளக்கர்", "யூஜின் கோல்ட்ஸ்டீன்", "ஜேம்ஸ் சாட்விக்", "ராபர்ட் மில்லிகன்"],
-        a: 0,
+        oE: ["Robert Millikan", "Eugen Goldstein", "James Chadwick", "Sir Julius Plucker"],
+        oT: ["ராபர்ட் மில்லிகன்", "யூஜின் கோல்ட்ஸ்டீன்", "ஜேம்ஸ் சாட்விக்", "சர் ஜூலியஸ் பிளக்கர்"],
+        a: 3,
         exp: "Cathode rays were discovered by Sir Julius Plucker, and the electron was discovered in cathode ray experiments by J. J. Thomson in 1897."
     },
     // 61
     {
         qE: "What is the mass of an electron in kilograms?",
         qT: "ஒரு எலக்ட்ரானின் நிறை கிலோகிராமில் எவ்வளவு?",
-        oE: ["9.11 × 10^-31 kg", "1.672 × 10^-27 kg", "1.6 × 10^-19 kg", "6.626 × 10^-34 kg"],
-        oT: ["9.11 × 10^-31 கிலோ", "1.672 × 10^-27 கிலோ", "1.6 × 10^-19 கிலோ", "6.626 × 10^-34 கிலோ"],
-        a: 0,
+        oE: ["6.626 × 10^-34 kg", "1.672 × 10^-27 kg", "1.6 × 10^-19 kg", "9.11 × 10^-31 kg"],
+        oT: ["6.626 × 10^-34 கிலோ", "1.672 × 10^-27 கிலோ", "1.6 × 10^-19 கிலோ", "9.11 × 10^-31 கிலோ"],
+        a: 3,
         exp: "The mass of an electron is 9.11 × 10^-31 kg or 0.000543 amu."
     },
     // 62
     {
         qE: "By which experiment was the charge of an electron (-1.6 × 10^-19 C) determined?",
         qT: "எலக்ட்ரானின் மின்னூட்டம் (-1.6 × 10^-19 C) எந்தச் சோதனையின் மூலம் கண்டறியப்பட்டது?",
-        oE: ["Alpha-particle scattering experiment", "Millikan oil drop experiment", "Cathode ray tube experiment", "Hydrogen spectrum experiment"],
-        oT: ["ஆல்பா-துகள் சிதறல் சோதனை", "மில்லிகன் எண்ணெய்த் துளி சோதனை", "கேத்தோடு கதிர் குழாய் சோதனை", "ஹைட்ரஜன் நிறமாலை சோதனை"],
-        a: 1,
+        oE: ["Alpha-particle scattering experiment", "Cathode ray tube experiment", "Millikan oil drop experiment", "Hydrogen spectrum experiment"],
+        oT: ["ஆல்பா-துகள் சிதறல் சோதனை", "கேத்தோடு கதிர் குழாய் சோதனை", "மில்லிகன் எண்ணெய்த் துளி சோதனை", "ஹைட்ரஜன் நிறமாலை சோதனை"],
+        a: 2,
         exp: "The charge of an electron (-1.6 × 10^-19 C) was determined by the Millikan oil drop experiment."
     },
     // 63
@@ -878,18 +876,18 @@ const baseQuizData = [
     {
         qE: "How many times heavier is a proton than an electron?",
         qT: "ஒரு புரோட்டானின் நிறை எலக்ட்ரானின் நிறையை விட எத்தனை மடங்கு அதிகமானது?",
-        oE: ["1000 times", "1672 times", "1836 times", "2000 times"],
-        oT: ["1000 மடங்கு", "1672 மடங்கு", "1836 மடங்கு", "2000 மடங்கு"],
-        a: 2,
+        oE: ["1836 times", "1672 times", "1000 times", "2000 times"],
+        oT: ["1836 மடங்கு", "1672 மடங்கு", "1000 மடங்கு", "2000 மடங்கு"],
+        a: 0,
         exp: "A proton has a mass of 1.672 × 10^-27 kg (1.00763 amu), which is 1836 times that of an electron."
     },
     // 65
     {
         qE: "What is the electrical charge of a neutron?",
         qT: "நியூட்ரானின் மின்னூட்டம் என்ன?",
-        oE: ["+1.6 × 10^-19 C", "-1.6 × 10^-19 C", "Zero", "+1 C"],
-        oT: ["+1.6 × 10^-19 C", "-1.6 × 10^-19 C", "பூஜ்ஜியம்", "+1 C"],
-        a: 2,
+        oE: ["Zero", "-1.6 × 10^-19 C", "+1.6 × 10^-19 C", "+1 C"],
+        oT: ["பூஜ்ஜியம்", "-1.6 × 10^-19 C", "+1.6 × 10^-19 C", "+1 C"],
+        a: 0,
         exp: "Discovered by James Chadwick, a neutron has zero charge and a mass of 1.00867 u."
     },
     // 66
@@ -905,18 +903,18 @@ const baseQuizData = [
     {
         qE: "Which force binds the negatively charged electrons with the positively charged nucleus?",
         qT: "எதிர்மின் எலக்ட்ரான்களை அணுக்கருவுடன் பிணைக்கும் விசை எது?",
-        oE: ["Gravitational force", "Electromagnetic force", "Centrifugal force", "Frictional force"],
-        oT: ["ஈர்ப்பு விசை", "மின்காந்த விசை", "மையவிலக்கு விசை", "உராய்வு விசை"],
-        a: 1,
+        oE: ["Gravitational force", "Centrifugal force", "Electromagnetic force", "Frictional force"],
+        oT: ["ஈர்ப்பு விசை", "மையவிலக்கு விசை", "மின்காந்த விசை", "உராய்வு விசை"],
+        a: 2,
         exp: "Electromagnetic forces bind the electrons with the nucleus."
     },
     // 68
     {
         qE: "What are the protons and neutrons present inside the nucleus collectively called?",
         qT: "அணுக்கருவுக்குள் இருக்கும் புரோட்டான்கள் மற்றும் நியூட்ரான்கள் கூட்டாக எவ்வாறு அழைக்கப்படுகின்றன?",
-        oE: ["Positrons", "Nucleons", "Bosons", "Mesons"],
-        oT: ["பாசிட்ரான்கள்", "நியூக்ளியான்கள்", "போசான்கள்", "மீசான்கள்"],
-        a: 1,
+        oE: ["Positrons", "Mesons", "Bosons", "Nucleons"],
+        oT: ["பாசிட்ரான்கள்", "மீசான்கள்", "போசான்கள்", "நியூக்ளியான்கள்"],
+        a: 3,
         exp: "Protons and neutrons residing in the nucleus are collectively called nucleons, and their total count equals the mass number (A)."
     },
     // 69
@@ -932,54 +930,54 @@ const baseQuizData = [
     {
         qE: "Which element has the maximum number of isotopes?",
         qT: "அதிக எண்ணிக்கையிலான ஐசோடோப்புகளைக் கொண்ட தனிமம் எது?",
-        oE: ["Hydrogen", "Carbon", "Polonium", "Lead"],
-        oT: ["ஹைட்ரஜன்", "கார்பன்", "பொலோனியம்", "ஈயம்"],
-        a: 2,
+        oE: ["Hydrogen", "Carbon", "Lead", "Polonium"],
+        oT: ["ஹைட்ரஜன்", "கார்பன்", "ஈயம்", "பொலோனியம்"],
+        a: 3,
         exp: "Polonium has the maximum number of isotopes. Hydrogen (H-1) is the lightest isotope and lead-208 is the heaviest."
     },
     // 71
     {
         qE: "Atoms of different elements having the same mass number but different atomic numbers, such as Ar-40, K-40, and Ca-40, are called what?",
         qT: "ஒத்த நிறை எண்ணையும் வெவ்வேறு அணு எண்களையும் கொண்ட Ar-40, K-40, Ca-40 போன்ற வெவ்வேறு தனிமங்களின் அணுக்கள் எவ்வாறு அழைக்கப்படுகின்றன?",
-        oE: ["Isotopes", "Isobars", "Isotones", "Isomers"],
-        oT: ["ஐசோடோப்புகள்", "ஐசோபார்கள்", "ஐசோடோன்கள்", "ஐசோமர்கள்"],
-        a: 1,
+        oE: ["Isobars", "Isotopes", "Isotones", "Isomers"],
+        oT: ["ஐசோபார்கள்", "ஐசோடோப்புகள்", "ஐசோடோன்கள்", "ஐசோமர்கள்"],
+        a: 0,
         exp: "Isobars are atoms of different elements having the same mass number (A) but different atomic numbers (Z)."
     },
     // 72
     {
         qE: "Why are 11Na23 and 12Mg24 classified as isotones?",
         qT: "11Na23 மற்றும் 12Mg24 ஆகியவை ஏன் ஐசோடோன்கள் என வகைப்படுத்தப்படுகின்றன?",
-        oE: ["Both have the same atomic number", "Both have the same mass number", "Both have 12 neutrons", "Both have 12 protons"],
-        oT: ["இரண்டும் ஒரே அணு எண்ணைக் கொண்டுள்ளன", "இரண்டும் ஒரே நிறை எண்ணைக் கொண்டுள்ளன", "இரண்டும் 12 நியூட்ரான்களைக் கொண்டுள்ளன", "இரண்டும் 12 புரோட்டான்களைக் கொண்டுள்ளன"],
-        a: 2,
+        oE: ["Both have the same atomic number", "Both have 12 neutrons", "Both have the same mass number", "Both have 12 protons"],
+        oT: ["இரண்டும் ஒரே அணு எண்ணைக் கொண்டுள்ளன", "இரண்டும் 12 நியூட்ரான்களைக் கொண்டுள்ளன", "இரண்டும் ஒரே நிறை எண்ணைக் கொண்டுள்ளன", "இரண்டும் 12 புரோட்டான்களைக் கொண்டுள்ளன"],
+        a: 1,
         exp: "Isotones have the same number of neutrons: 23 - 11 = 12 neutrons in Na and 24 - 12 = 12 neutrons in Mg."
     },
     // 73
     {
         qE: "How many neutrons are present in each of the isotone pair 15P31 and 14Si30?",
         qT: "15P31 மற்றும் 14Si30 என்ற ஐசோடோன் இணையில் ஒவ்வொன்றிலும் எத்தனை நியூட்ரான்கள் உள்ளன?",
-        oE: ["14", "15", "16", "30"],
-        oT: ["14", "15", "16", "30"],
-        a: 2,
+        oE: ["14", "16", "15", "30"],
+        oT: ["14", "16", "15", "30"],
+        a: 1,
         exp: "Both 15P31 (31 - 15 = 16) and 14Si30 (30 - 14 = 16) contain 16 neutrons."
     },
     // 74
     {
         qE: "According to Planck's Quantum Theory, what is the smallest discrete amount of energy emitted or absorbed as electromagnetic radiation called?",
         qT: "பிளாங்கின் குவாண்டம் கொள்கையின்படி, மின்காந்த கதிர்வீச்சாக உமிழப்படும் அல்லது உறிஞ்சப்படும் மிகச்சிறிய தனித்த ஆற்றல் அளவு எவ்வாறு அழைக்கப்படுகிறது?",
-        oE: ["Nucleon", "Quantum", "Positron", "Meson"],
-        oT: ["நியூக்ளியான்", "குவாண்டம்", "பாசிட்ரான்", "மீசான்"],
-        a: 1,
+        oE: ["Quantum", "Nucleon", "Positron", "Meson"],
+        oT: ["குவாண்டம்", "நியூக்ளியான்", "பாசிட்ரான்", "மீசான்"],
+        a: 0,
         exp: "According to Planck's Quantum Theory, the smallest discrete packet of electromagnetic energy emitted or absorbed is called a quantum."
     },
     // 75
     {
         qE: "What is the value of Planck's constant (h) in the equation E = hv?",
         qT: "E = hv என்ற சமன்பாட்டில் பிளாங்க் மாறிலியின் (h) மதிப்பு என்ன?",
-        oE: ["9.11 × 10^-31 J s", "1.6 × 10^-19 J s", "6.626 × 10^-34 J s", "1.672 × 10^-27 J s"],
-        oT: ["9.11 × 10^-31 J s", "1.6 × 10^-19 J s", "6.626 × 10^-34 J s", "1.672 × 10^-27 J s"],
-        a: 2,
+        oE: ["9.11 × 10^-31 J s", "1.6 × 10^-19 J s", "1.672 × 10^-27 J s", "6.626 × 10^-34 J s"],
+        oT: ["9.11 × 10^-31 J s", "1.6 × 10^-19 J s", "1.672 × 10^-27 J s", "6.626 × 10^-34 J s"],
+        a: 3,
         exp: "In Planck's equation E = hv, energy is directly proportional to frequency and Planck's constant h = 6.626 × 10^-34 J s."
     },
 
@@ -997,9 +995,9 @@ const baseQuizData = [
     {
         qE: "Common salt dissolves easily in water without significantly increasing the water level because of which reason?",
         qT: "சாதாரண உப்பு நீரில் கரையும்போது நீரின் மட்டம் கணிசமாக உயராமல் எளிதில் கரைவதற்குக் காரணம் என்ன?",
-        oE: ["Salt melts into liquid at room temperature", "Water has spaces between its particles for salt particles to enter", "Salt evaporates rapidly inside water", "Salt is less dense than water"],
-        oT: ["உப்பு அறை வெப்பநிலையில் திரவமாக உருகுகிறது", "நீர்த் துகள்களுக்கு இடையே உள்ள இடைவெளியில் உப்புத் துகள்கள் புகுந்துகொள்கின்றன", "உப்பு நீருக்குள் வேகமாக ஆவியாகிறது", "உப்பு நீரை விடக் குறைந்த அடர்த்தி கொண்டது"],
-        a: 1,
+        oE: ["Salt melts into liquid at room temperature", "Salt is less dense than water", "Salt evaporates rapidly inside water", "Water has spaces between its particles for salt particles to enter"],
+        oT: ["உப்பு அறை வெப்பநிலையில் திரவமாக உருகுகிறது", "உப்பு நீரை விடக் குறைந்த அடர்த்தி கொண்டது", "உப்பு நீருக்குள் வேகமாக ஆவியாகிறது", "நீர்த் துகள்களுக்கு இடையே உள்ள இடைவெளியில் உப்புத் துகள்கள் புகுந்துகொள்கின்றன"],
+        a: 3,
         exp: "RRB Group D PYQ: Particles of matter have spaces between them, allowing dissolved salt ions to occupy the intermolecular spaces of water."
     },
     // 78
@@ -1024,194 +1022,11 @@ const baseQuizData = [
     {
         qE: "Which separation technique is used to separate different coloured dyes present in ink?",
         qT: "மையில் உள்ள பல்வேறு வண்ணச் சாயங்களைப் பிரிக்கப் பயன்படும் பிரித்தல் நுட்பம் எது?",
-        oE: ["Centrifugation", "Sublimation", "Chromatography", "Magnetic separation"],
-        oT: ["மையவிலக்கு முறை", "பதங்கமாதல்", "வண்ணப்பிரிகை முறை", "காந்தப் பிரிப்பு முறை"],
-        a: 2,
+        oE: ["Chromatography", "Sublimation", "Centrifugation", "Magnetic separation"],
+        oT: ["வண்ணப்பிரிகை முறை", "பதங்கமாதல்", "மையவிலக்கு முறை", "காந்தப் பிரிப்பு முறை"],
+        a: 0,
         exp: "RRB Group D PYQ: Chromatography is used to separate solutes such as dyes in ink that dissolve in the same solvent."
     },
-
-    // ================= 20 STATEMENT-BASED QUESTIONS FROM NOTES (Q81 - Q100) =================
-    // 81 (Ans: 0 - Only 1)
-    {
-        qE: "Consider the following statements:\n1. Solids have both a definite volume and a definite shape.\n2. Gases have a definite volume but no definite shape.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. திண்மங்களுக்கு நிலையான கன அளவும் நிலையான வடிவமும் உண்டு.\n2. வாயுக்களுக்கு நிலையான கன அளவு உண்டு ஆனால் நிலையான வடிவம் இல்லை.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 0,
-        exp: "Statement 1 is correct. Statement 2 is incorrect because gases have neither a definite volume nor a definite shape (liquids have definite volume and no definite shape)."
-    },
-    // 82 (Ans: 2 - Both 1 and 2)
-    {
-        qE: "Consider the following statements:\n1. Plasma is considered the fourth state of matter.\n2. Bose-Einstein Condensate is considered the fifth state of matter.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. பிளாஸ்மா பருப்பொருளின் நான்காவது நிலையாகக் கருதப்படுகிறது.\n2. போஸ்-ஐன்ஸ்டீன் சுருக்கம் பருப்பொருளின் ஐந்தாவது நிலையாகக் கருதப்படுகிறது.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 2,
-        exp: "Both statements are correct. The five states of matter are Solid, Liquid, Gas, Plasma, and Bose-Einstein Condensate."
-    },
-    // 83 (Ans: 1 - Only 2)
-    {
-        qE: "Consider the following statements:\n1. The melting point of ice increases in the presence of impurities.\n2. The boiling point of water increases in the presence of impurities.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. மாசுக்கள் இருக்கும்போது பனிக்கட்டியின் உருகுநிலை அதிகரிக்கிறது.\n2. மாசுக்கள் இருக்கும்போது நீரின் கொதிநிலை அதிகரிக்கிறது.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 1,
-        exp: "Statement 1 is incorrect because melting point decreases in the presence of impurities. Statement 2 is correct."
-    },
-    // 84 (Ans: 3 - Neither 1 nor 2)
-    {
-        qE: "Consider the following statements:\n1. Evaporation occurs only at the boiling point of a liquid.\n2. Increasing the surface area decreases the rate of evaporation.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. ஆவியாதல் ஒரு திரவத்தின் கொதிநிலையில் மட்டுமே நிகழ்கிறது.\n2. மேற்பரப்புப் பரப்பளவை அதிகரிப்பது ஆவியாதல் வீதத்தைக் குறைக்கிறது.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 3,
-        exp: "Both statements are incorrect. Evaporation occurs at any temperature below the boiling point, and it increases with an increase in surface area and temperature."
-    },
-    // 85 (Ans: 0 - Only 1)
-    {
-        qE: "Consider the following statements:\n1. In Boyle's Law, when pressure goes up at constant temperature, the volume of a gas goes down.\n2. In Charles's Law, when temperature goes up at constant pressure, the volume of a gas goes down.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. பாயில் விதியில், மாறா வெப்பநிலையில் அழுத்தம் அதிகரிக்கும்போது வாயுவின் கன அளவு குறைகிறது.\n2. சார்லஸ் விதியில், மாறா அழுத்தத்தில் வெப்பநிலை அதிகரிக்கும்போது வாயுவின் கன அளவு குறைகிறது.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 0,
-        exp: "Statement 1 is correct (V is inversely proportional to P). Statement 2 is incorrect because in Charles's Law, volume increases directly with Kelvin temperature."
-    },
-    // 86 (Ans: 1 - Only 2)
-    {
-        qE: "Consider the following statements:\n1. All mixtures are classified as pure substances.\n2. All elements and compounds are classified as pure substances.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. அனைத்துக் கலவைகளும் தூய பொருட்கள் என வகைப்படுத்தப்படுகின்றன.\n2. அனைத்துத் தனிமங்களும் சேர்மங்களும் தூய பொருட்கள் என வகைப்படுத்தப்படுகின்றன.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 1,
-        exp: "Statement 1 is incorrect because mixtures are impure substances. Statement 2 is correct."
-    },
-    // 87 (Ans: 3 - Neither 1 nor 2)
-    {
-        qE: "Consider the following statements:\n1. In a physical change, one or more new substances are always formed.\n2. A chemical change is generally reversible and does not form any new substance.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. இயற்பியல் மாற்றத்தில் ஒன்று அல்லது அதற்கு மேற்பட்ட புதிய பொருட்கள் எப்போதும் உருவாகின்றன.\n2. வேதியியல் மாற்றம் பொதுவாக மீளக்கூடியது மற்றும் புதிய பொருளை உருவாக்காது.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 3,
-        exp: "Both statements are incorrect. No new substance is formed in a physical change, whereas one or more new substances are formed in a chemical change."
-    },
-    // 88 (Ans: 2 - Both 1 and 2)
-    {
-        qE: "Consider the following statements:\n1. A true solution is a homogeneous mixture and does not show the Tyndall effect.\n2. A colloidal solution is a heterogeneous mixture and shows both the Tyndall effect and Brownian movement.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. உண்மைக் கரைசல் ஒரு ஒருபடித்தான கலவையாகும் மற்றும் டிண்டால் விளைவைக் காட்டாது.\n2. கூழ்மக் கரைசல் ஒரு பலபடித்தான கலவையாகும் மற்றும் டிண்டால் விளைவு, பிரௌனியன் இயக்கம் ஆகிய இரண்டையும் காட்டுகிறது.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 2,
-        exp: "Both statements are correct based on the properties of true solutions and colloidal solutions."
-    },
-    // 89 (Ans: 0 - Only 1)
-    {
-        qE: "Consider the following statements:\n1. In a colloidal solution, the continuous phase in which particles are dispersed is called the dispersion medium.\n2. Particles of a suspension are smaller than 1 nm and cannot be seen by the naked eye.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. கூழ்மக் கரைசலில் துகள்கள் பரவியுள்ள தொடர்ச்சியான நிலைமை பரவல் ஊடகம் எனப்படும்.\n2. தொங்கலின் துகள்கள் 1 nm-க்கும் சிறியவை மற்றும் வெறும் கண்ணால் காண முடியாது.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 0,
-        exp: "Statement 1 is correct. Statement 2 is incorrect because suspension particles are greater than 1000 nm and are big enough to be seen by the naked eye."
-    },
-    // 90 (Ans: 2 - Both 1 and 2)
-    {
-        qE: "Consider the following statements:\n1. Purification of water by alum is an application of coagulation.\n2. Formation of deltas at the junction of a river and sea is an example of coagulation.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. படிகாரத்தால் நீரைச் சுத்திகரிப்பது கூழ்மத் திரிதலின் பயன்பாடாகும்.\n2. ஆறும் கடலும் சேரும் இடத்தில் டெல்டா உருவாவது கூழ்மத் திரிதலுக்கு உதாரணமாகும்.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 2,
-        exp: "Both statements are correct applications of coagulation."
-    },
-    // 91 (Ans: 1 - Only 2)
-    {
-        qE: "Consider the following statements:\n1. Butter and cheese are examples of emulsions.\n2. Milk and face-cream are examples of emulsions.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. வெண்ணெய் மற்றும் பாலாடைக்கட்டி ஆகியவை பால்மத்திற்கு உதாரணங்கள்.\n2. பால் மற்றும் முகக் கிரீம் ஆகியவை பால்மத்திற்கு உதாரணங்கள்.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 1,
-        exp: "Statement 1 is incorrect because butter, cheese, and jelly are Gels (liquid in solid). Statement 2 is correct (liquid in liquid)."
-    },
-    // 92 (Ans: 3 - Neither 1 nor 2)
-    {
-        qE: "Consider the following statements:\n1. Particles of a true solution cannot pass through parchment paper.\n2. Particles of a suspension pass easily through ordinary filter paper.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. உண்மைக் கரைசலின் துகள்கள் பார்ச்மென்ட் தாள் வழியாகச் செல்ல முடியாது.\n2. தொங்கலின் துகள்கள் சாதாரண வடிகட்டித் தாள் வழியாக எளிதில் செல்லும்.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 3,
-        exp: "Both statements are incorrect. True solution particles diffuse rapidly through both filter paper and parchment paper, whereas suspension particles do not pass through either."
-    },
-    // 93 (Ans: 0 - Only 1)
-    {
-        qE: "Consider the following statements:\n1. J. J. Thomson's atomic model explained that atoms are electrically neutral, but could not explain the alpha-particle scattering experiment.\n2. Rutherford's atomic model successfully explained why atoms are completely stable.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. ஜே. ஜே. தாம்சனின் அணு மாதிரி அணுக்கள் மின்நடுநிலையானவை என்பதை விளக்கியது, ஆனால் ஆல்பா-துகள் சிதறல் சோதனையை விளக்க முடியவில்லை.\n2. ரூதர்ஃபோர்டின் அணு மாதிரி அணுக்கள் ஏன் முழுமையாக நிலையானவை என்பதை வெற்றிகரமாக விளக்கியது.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 0,
-        exp: "Statement 1 is correct. Statement 2 is incorrect because Rutherford's model was discarded as it implied revolving electrons would lose energy and fall into the nucleus, making the atom unstable."
-    },
-    // 94 (Ans: 1 - Only 2)
-    {
-        qE: "Consider the following statements:\n1. Anode rays originate directly from the anode and travel faster than cathode rays.\n2. Anode rays are positively charged and have a velocity less than cathode rays.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. ஆனோடு கதிர்கள் நேரடியாக ஆனோடிலிருந்து உருவாகி கேத்தோடு கதிர்களை விட வேகமாகப் பயணிக்கின்றன.\n2. ஆனோடு கதிர்கள் நேர்மின்னூட்டம் கொண்டவை மற்றும் கேத்தோடு கதிர்களை விடக் குறைந்த திசைவேகம் கொண்டவை.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 1,
-        exp: "Statement 1 is incorrect because anode rays do not originate from the anode and are slower than cathode rays. Statement 2 is correct."
-    },
-    // 95 (Ans: 2 - Both 1 and 2)
-    {
-        qE: "Consider the following statements:\n1. Positron is the antiparticle of the electron.\n2. In a neutral atom, the number of electrons is equal to the number of protons.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. பாசிட்ரான் என்பது எலக்ட்ரானின் எதிர்த்துகள் ஆகும்.\n2. ஒரு நடுநிலை அணுவில் எலக்ட்ரான்களின் எண்ணிக்கை புரோட்டான்களின் எண்ணிக்கைக்குச் சமம்.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 2,
-        exp: "Both statements are correct."
-    },
-    // 96 (Ans: 3 - Neither 1 nor 2)
-    {
-        qE: "Consider the following statements:\n1. If the number of electrons is less than the number of protons, the atom carries a negative charge.\n2. If the number of electrons is more than the number of protons, the atom carries a positive charge.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. எலக்ட்ரான்களின் எண்ணிக்கை புரோட்டான்களை விடக் குறைவாக இருந்தால் அணு எதிர்மின்னூட்டம் பெறும்.\n2. எலக்ட்ரான்களின் எண்ணிக்கை புரோட்டான்களை விட அதிகமாக இருந்தால் அணு நேர்மின்னூட்டம் பெறும்.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 3,
-        exp: "Both statements are incorrect because the charges are reversed: fewer electrons than protons give a positive charge, and more electrons than protons give a negative charge."
-    },
-    // 97 (Ans: 0 - Only 1)
-    {
-        qE: "Consider the following statements:\n1. The alpha-particle scattering experiment suggested that most of the part of an atom is empty.\n2. The mass number of an atom is denoted by Z and equals the number of protons alone.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. அணுவின் பெரும்பகுதி வெற்றிடமாக உள்ளது என்பதை ஆல்பா-துகள் சிதறல் சோதனை உணர்த்தியது.\n2. அணுவின் நிறை எண் Z எனக் குறிக்கப்படுகிறது மற்றும் அது புரோட்டான்களின் எண்ணிக்கைக்கு மட்டுமே சமம்.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 0,
-        exp: "Statement 1 is correct. Statement 2 is incorrect because mass number is denoted by A (protons + neutrons), while atomic number is denoted by Z."
-    },
-    // 98 (Ans: 2 - Both 1 and 2)
-    {
-        qE: "Consider the following statements:\n1. Isotopes of an element have the same atomic number but different mass numbers.\n2. Isobars have the same mass number but different atomic numbers.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. ஒரு தனிமத்தின் ஐசோடோப்புகள் ஒரே அணு எண்ணையும் வெவ்வேறு நிறை எண்களையும் கொண்டுள்ளன.\n2. ஐசோபார்கள் ஒரே நிறை எண்ணையும் வெவ்வேறு அணு எண்களையும் கொண்டுள்ளன.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 2,
-        exp: "Both statements are correct definitions of isotopes and isobars."
-    },
-    // 99 (Ans: 1 - Only 2)
-    {
-        qE: "Consider the following statements:\n1. Isotones are atoms of the same element having the same number of protons.\n2. According to Planck's Quantum Theory, the energy of radiation is directly proportional to its frequency.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. ஐசோடோன்கள் என்பவை ஒரே எண்ணிக்கையிலான புரோட்டான்களைக் கொண்ட ஒரே தனிமத்தின் அணுக்கள் ஆகும்.\n2. பிளாங்கின் குவாண்டம் கொள்கையின்படி, கதிர்வீச்சின் ஆற்றல் அதன் அதிர்வெண்ணிற்கு நேர்விகிதத்தில் இருக்கும்.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 1,
-        exp: "Statement 1 is incorrect because isotones are atoms of different elements having the same number of neutrons. Statement 2 is correct (E = hv)."
-    },
-    // 100 (Ans: 3 - Neither 1 nor 2)
-    {
-        qE: "Consider the following statements:\n1. In the Earth's crust, carbon is the most abundant element.\n2. In the human body, silicon is the most abundant element.",
-        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. பூமியின் மேலோட்டில் கார்பன் மிக அதிக அளவில் காணப்படும் தனிமமாகும்.\n2. மனித உடலில் சிலிக்கான் மிக அதிக அளவில் காணப்படும் தனிமமாகும்.",
-        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
-        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
-        a: 3,
-        exp: "Both statements are incorrect. Oxygen is the most abundant element in both the Earth's crust and the human body."
-    }
-];
 
 let quizData = [];
 let currentQ = 0;

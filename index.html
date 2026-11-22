@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RRB CBT - MATTER and ATOMS </title>
+<style>
+    :root {
+        --bg-color: #121212;
+        --surface-color: #1e1e1e;
+        --primary-cyan: #369BFF;
+        --primary-blue: #2979ff;
+        --text-primary: #ffffff;
+        --text-secondary: #b3b3b3;
+        --border-color: #333333;
+        
+        --color-not-visited: #9e9e9e;
+        --color-not-answered: #f44336;
+        --color-answered: #4caf50;
+        --color-marked: #9c27b0;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    
+    /* 100dvh prevents mobile browser URL bars from hiding the bottom elements */
+    body { background-color: var(--bg-color); color: var(--text-primary); height: 100vh; height: 100dvh; overflow: hidden; display: flex; flex-direction: column; }
+    
+    /* Views */
+    .view { display: none; flex-direction: column; height: 100%; overflow: hidden; }
+    .view.active { display: flex; }
+    
+    /* Landing Page */
+    .landing-container { max-width: 800px; margin: auto; padding: 40px 20px; text-align: center; overflow-y: auto; }
+    .landing-container h1 { color: var(--primary-cyan); font-size: 2rem; margin-bottom: 20px; }
+    .instructions { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 10px; padding: 25px; text-align: left; margin-bottom: 30px; line-height: 1.6; }
+    .instructions h3 { color: var(--primary-cyan); margin-bottom: 15px; }
+    .instructions ul { margin-left: 20px; }
+    .start-btn { background: var(--primary-blue); color: #fff; border: none; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+    .start-btn:hover { background: #1565c0; transform: scale(1.05); }
+
+    /* Header */
+    .header { background-color: var(--surface-color); border-bottom: 2px solid var(--primary-cyan); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; z-index: 50; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    .header h1 { font-size: 1.2rem; font-weight: 600; color: var(--primary-cyan); }
+    .timer-container { font-size: 1.2rem; font-weight: bold; background: #2a2a2a; padding: 5px 15px; border-radius: 5px; border: 1px solid var(--primary-blue); }
+    
+    /* Mobile Top Bar (Toggle Palette & Submit) */
+    .mobile-top-bar { display: none; width: 100%; flex-shrink: 0; z-index: 40; border-bottom: 1px solid var(--border-color); }
+    .mobile-top-bar button { flex: 1; padding: 12px; border: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; text-transform: uppercase; }
+    .btn-toggle-top { background: #2a2a2a; color: var(--primary-cyan); border-right: 1px solid var(--border-color) !important; }
+    .btn-submit-top { background: var(--color-answered); color: #fff; }
+
+    /* Main Layout */
+    .main-container { display: flex; flex: 1; overflow: hidden; position: relative; }
+    
+    /* Quiz Left Panel */
+    .quiz-left-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    
+    /* Question Scrolling Area */
+    .question-scroll-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 40px; }
+    .q-header { display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; font-size: 1.1rem; color: var(--primary-cyan); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+    .question-text { font-size: 1.1rem; line-height: 1.6; margin-bottom: 15px; }
+    .question-tamil { font-size: 1.1rem; line-height: 1.6; color: var(--primary-cyan); margin-bottom: 25px; }
+    
+    .options-list { display: flex; flex-direction: column; gap: 12px; }
+    .option-label { display: flex; align-items: center; padding: 12px 15px; background: #2a2a2a; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: 0.2s; }
+    .option-label:hover { border-color: var(--primary-cyan); background: #333; }
+    .option-label input { margin-right: 15px; transform: scale(1.2); accent-color: var(--primary-cyan); }
+    
+    /* Pinned Action Buttons Footer */
+    .action-buttons { flex-shrink: 0; display: flex; flex-wrap: wrap; gap: 10px; padding: 15px 20px; background: var(--surface-color); border-top: 1px solid var(--border-color); z-index: 10; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
+    .btn { padding: 10px 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.2s; color: #fff; text-transform: uppercase; font-size: 0.85rem; display: flex; justify-content: center; align-items: center; text-align: center; }
+    .btn-prev { background: #424242; }
+    .btn-prev:hover { background: #616161; }
+    .btn-clear { background: #f44336; }
+    .btn-clear:hover { background: #d32f2f; }
+    .btn-mark { background: var(--color-marked); }
+    .btn-mark:hover { background: #7b1fa2; }
+    .btn-save { background: var(--primary-blue); margin-left: auto; }
+    .btn-save:hover { background: #1565c0; }
+
+    /* Palette Section */
+    .palette-section { width: 320px; background: var(--surface-color); border-left: 1px solid var(--border-color); display: flex; flex-direction: column; transition: transform 0.3s ease; flex-shrink: 0; }
+    .palette-header { padding: 15px; border-bottom: 1px solid var(--border-color); font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+    .palette-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 15px; overflow-y: auto; }
+    .q-bubble { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.9rem; color: #fff; background: var(--color-not-visited); border: 2px solid transparent; }
+    .q-bubble.active { border-color: var(--primary-cyan); transform: scale(1.1); box-shadow: 0 0 8px var(--primary-cyan); }
+    
+    .status-0 { background: var(--color-not-visited); color: #000; } 
+    .status-1 { background: var(--color-not-answered); } 
+    .status-2 { background: var(--color-answered); } 
+    .status-3 { background: var(--color-marked); } 
+    .status-4 { background: var(--color-marked); position: relative; } 
+    .status-4::after { content: ''; position: absolute; bottom: 2px; right: 2px; width: 8px; height: 8px; background: var(--color-answered); border-radius: 50%; border: 1px solid #fff; }
+
+    .legend { padding: 15px; font-size: 0.8rem; border-top: 1px solid var(--border-color); display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .legend-box { width: 15px; height: 15px; border-radius: 3px; }
+    .btn-submit-desktop { background: var(--color-answered); width: 100%; padding: 12px; }
+
+    /* Custom Modals (No native alerts) */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+    .modal-content { background: var(--surface-color); padding: 30px; border-radius: 10px; width: 100%; max-width: 500px; border: 1px solid var(--border-color); text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+    .modal-content h2 { color: var(--primary-cyan); margin-bottom: 20px; }
+    .modal-actions { display: flex; justify-content: center; gap: 15px; margin-top: 25px; }
+    
+    /* Results View */
+    .results-container { max-width: 900px; margin: auto; padding: 40px 20px; text-align: center; overflow-y: auto; width: 100%; }
+    .result-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 30px 0; }
+    .stat-box { background: #2a2a2a; padding: 20px; border-radius: 8px; border-bottom: 4px solid #666; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .stat-box.st-score { border-color: var(--primary-cyan); grid-column: span 2; }
+    .stat-box.st-correct { border-color: var(--color-answered); }
+    .stat-box.st-wrong { border-color: var(--color-not-answered); }
+    .stat-box h3 { font-size: 2.5rem; margin-bottom: 5px; }
+    .stat-box.st-score h3 { font-size: 3.5rem; color: var(--primary-cyan); }
+    
+    /* Tabbed Review Section */
+    #detailed-review-section { display: none; margin-top: 40px; }
+    .review-tabs { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap; }
+    .tab-btn { background: #2a2a2a; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 12px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; min-width: 110px; text-align: center; transition: 0.2s; }
+    .tab-btn:hover { background: #333; }
+    .tab-btn.active { color: #fff; border-bottom: 3px solid; }
+    .tab-btn[data-tab="correct"].active { border-color: var(--color-answered); background: rgba(76, 175, 80, 0.1); }
+    .tab-btn[data-tab="wrong"].active { border-color: var(--color-not-answered); background: rgba(244, 67, 54, 0.1); }
+    .tab-btn[data-tab="unattempted"].active { border-color: var(--color-not-visited); background: rgba(158, 158, 158, 0.1); }
+    
+    .tab-content { display: none; text-align: left; }
+    .tab-content.active { display: block; }
+    
+    .review-item { padding: 20px; background: #2a2a2a; margin-bottom: 15px; border-radius: 8px; border-left: 5px solid var(--border-color); }
+    .review-item.correct { border-left-color: var(--color-answered); }
+    .review-item.wrong { border-left-color: var(--color-not-answered); }
+    .review-item.unattempted { border-left-color: var(--color-not-visited); }
+    
+    .answer-tag { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; margin-top: 10px; }
+    .tag-correct { background: rgba(76, 175, 80, 0.2); color: #81c784; border: 1px solid #4caf50; }
+    .tag-wrong { background: rgba(244, 67, 54, 0.2); color: #e57373; border: 1px solid #f44336; }
+    .tag-unattempted { background: rgba(158, 158, 158, 0.2); color: #e0e0e0; border: 1px solid #9e9e9e; }
+    
+    .explanation-box { margin-top: 12px; padding: 12px; background: #1e1e1e; border-radius: 5px; border-left: 3px solid var(--primary-cyan); font-size: 0.95rem; line-height: 1.5; color: #ddd; }
+
+    /* MOBILE SPECIFIC OVERRIDES */
+    @media (max-width: 768px) {
+        .mobile-top-bar { display: flex; }
+        .palette-section { position: absolute; top: 0; right: 0; height: 100%; transform: translateX(100%); z-index: 100; box-shadow: -5px 0 15px rgba(0,0,0,0.5); }
+        .palette-section.open { transform: translateX(0); }
+        
+        .result-grid { grid-template-columns: 1fr; }
+        .stat-box.st-score { grid-column: span 1; }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 10px;
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
+        }
+        .btn-save { grid-column: span 2; margin-left: 0; padding: 15px; font-size: 1.1rem; order: 1; }
+        .btn-mark { order: 2; padding: 12px; }
+        .btn-clear { order: 3; padding: 12px; }
+        .btn-prev { grid-column: span 2; order: 4; padding: 12px; }
+    }
+</style>
+</head>
+<body>
+
+<!-- VIEW 1: Landing Page -->
+<div id="view-landing" class="view active">
+    <div class="landing-container">
+        <h1>CHEMISTRY - ATOMS - MATTER</h1>
+        <div class="instructions">
+            <h3>📝 Instructions:</h3>
+            <ul>
+                <li><strong>Total Questions:</strong> 100 (Bilingual: English & Tamil).</li>
+                <li><strong>Time Allotted:</strong> 30 Minutes.</li>
+                <li><strong>Marking Scheme:</strong> +1 mark for correct answers, <strong>-0.33 marks</strong> for incorrect answers.</li>
+                <li>Questions are shuffled automatically for every attempt.</li>
+                <li>Use the Question Palette to navigate. You can Mark questions for review.</li>
+                <li>Ensure you have a stable connection. Do not refresh the page during the exam.</li>
+            </ul>
+        </div>
+        <button class="start-btn" onclick="startQuiz()">I am ready to begin</button>
+    </div>
+</div>
+
+<!-- VIEW 2: Main Quiz -->
+<div id="view-quiz" class="view">
+    
+    <div class="header">
+        <h1>CHEMISTRY - ATOMS </h1>
+        <div class="timer-container" id="timer">30:00</div>
+    </div>
+
+    <!-- Mobile Explicit Top Bar -->
+    <div class="mobile-top-bar">
+        <button class="btn-toggle-top" onclick="togglePalette()">☰ Question Palette</button>
+        <button class="btn-submit-top" onclick="showSubmitConfirm()">Submit Exam</button>
+    </div>
+
+    <div class="main-container">
+        
+        <!-- Question Panel (Scrollable content + Fixed Footer) -->
+        <div class="quiz-left-panel">
+            
+            <div class="question-scroll-area">
+                <div class="q-header">
+                    <span id="q-no">Question 1</span>
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">Negative Marks: -0.33</span>
+                </div>
+                
+                <div class="question-text" id="q-text-en">Loading...</div>
+                <div class="question-tamil" id="q-text-ta">ஏற்றுகிறது...</div>
+                
+                <div class="options-list" id="options-container"></div>
+            </div>
+            
+            <!-- Fixed Action Buttons Footer -->
+            <div class="action-buttons">
+                <button class="btn btn-save" onclick="saveAndNext()">Save & Next ►</button>
+                <button class="btn btn-mark" onclick="markAndNext()">Mark & Next</button>
+                <button class="btn btn-clear" onclick="clearResponse()">Clear</button>
+                <button class="btn btn-prev" onclick="prevQuestion()">◄ Previous</button>
+            </div>
+            
+        </div>
+        
+        <!-- Collapsible Palette -->
+        <div class="palette-section" id="palette">
+            <div class="palette-header">
+                <span>Question Palette</span>
+                <button onclick="togglePalette()" class="btn btn-prev" style="padding: 5px; display: none;" id="close-palette-btn">X</button>
+            </div>
+            <div class="palette-grid" id="palette-grid"></div>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-box status-2"></div> Answered</div>
+                <div class="legend-item"><div class="legend-box status-1"></div> Not Answered</div>
+                <div class="legend-item"><div class="legend-box status-0"></div> Not Visited</div>
+                <div class="legend-item"><div class="legend-box status-3"></div> Marked</div>
+                <div class="legend-item"><div class="legend-box status-4"></div> Ans & Marked</div>
+            </div>
+            <div style="padding: 15px;">
+                <button class="btn btn-submit btn-submit-desktop" onclick="showSubmitConfirm()">SUBMIT EXAM</button>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- Custom Confirmation Modal -->
+<div class="modal-overlay" id="confirm-modal">
+    <div class="modal-content">
+        <h2>Submit Exam?</h2>
+        <p>Are you sure you want to submit? You will not be able to change your answers.</p>
+        <p id="unanswered-warning" style="color: var(--color-not-answered); margin-top: 10px; font-weight: bold; display: none;"></p>
+        <div class="modal-actions">
+            <button class="btn btn-prev" onclick="closeSubmitConfirm()">No, Go Back</button>
+            <button class="btn btn-submit" style="width: auto; margin-top: 0; padding: 10px 20px;" onclick="submitExam()">Yes, Submit</button>
+        </div>
+    </div>
+</div>
+
+<!-- VIEW 3: Results & Review -->
+<div id="view-results" class="view">
+    <div class="results-container">
+        <h1 style="color: var(--primary-cyan); font-size: 2.2rem; margin-bottom: 20px;">Exam Submitted Successfully</h1>
+        
+        <div class="result-grid">
+            <div class="stat-box st-score">
+                <div>Final Score</div>
+                <h3 id="res-score">0.00</h3>
+                <div style="color: var(--text-secondary); font-size: 0.9rem;" id="out-of-text">(Out of 100)</div>
+            </div>
+            <div class="stat-box st-correct">
+                <h3 id="res-correct">0</h3>
+                <div>Correct</div>
+            </div>
+            <div class="stat-box st-wrong">
+                <h3 id="res-wrong">0</h3>
+                <div>Incorrect</div>
+            </div>
+        </div>
+        
+        <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 25px;">Unattempted Questions: <strong id="res-unattempted" style="color: #fff;">0</strong></p>
+        
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;" id="post-exam-actions">
+            <button class="btn btn-save" onclick="showDetailedReview()">View Detailed Review</button>
+            <button class="btn btn-prev" onclick="location.reload()">Restart Quiz</button>
+        </div>
+        
+        <!-- 3-Section Tabbed Review -->
+        <div id="detailed-review-section">
+            <h2 style="margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Test Review</h2>
+            
+            <div class="review-tabs">
+                <button class="tab-btn" data-tab="correct" onclick="switchTab('correct')">Correct (<span id="tab-count-correct">0</span>)</button>
+                <button class="tab-btn" data-tab="wrong" onclick="switchTab('wrong')">Incorrect (<span id="tab-count-wrong">0</span>)</button>
+                <button class="tab-btn" data-tab="unattempted" onclick="switchTab('unattempted')">Unattempted (<span id="tab-count-unattempted">0</span>)</button>
+            </div>
+            
+            <div id="review-content-correct" class="tab-content"></div>
+            <div id="review-content-wrong" class="tab-content"></div>
+            <div id="review-content-unattempted" class="tab-content"></div>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+// Base Data containing 50 questions
+const baseQuizData = [
+    // ================= 75 NOTES-BASED EASY TO MEDIUM MCQS (Q1 - Q75) =================
+    // 1
+    {
+        qE: "Into how many phases does matter exist according to modern classification?",
+        qT: "நவீன வகைப்பாட்டின்படி பருப்பொருள் எத்தனை நிலைகளில் உள்ளது?",
+        oE: ["Three", "Four", "Five", "Six"],
+        oT: ["மூன்று", "நான்கு", "ஐந்து", "ஆறு"],
+        a: 2,
+        exp: "Matter exists in five phases: Solid, Liquid, Gas, Plasma, and Bose-Einstein Condensate."
+    },
+    // 2
+    {
+        qE: "Which state of matter has a definite volume but no definite shape?",
+        qT: "நிலையான கன அளவு ஆனால் நிலையான வடிவம் இல்லாத பருப்பொருளின் நிலை எது?",
+        oE: ["Solid", "Liquid", "Gas", "Plasma"],
+        oT: ["திண்மம்", "திரவம்", "வாயு", "பிளாஸ்மா"],
+        a: 1,
+        exp: "Liquids have a definite volume but no definite shape; they take the shape of the vessel in which they are kept and can flow."
+    },
+    // 3
+    {
+        qE: "Which gases are contained in a fluorescent tube?",
+        qT: "ஒளிரும் குழாயில் (Fluorescent tube) எந்த வாயுக்கள் உள்ளன?",
+        oE: ["Hydrogen and nitrogen", "Helium and neon", "Oxygen and argon", "Carbon dioxide and neon"],
+        oT: ["ஹைட்ரஜன் மற்றும் நைட்ரஜன்", "ஹீலியம் மற்றும் நியான்", "ஆக்ஸிஜன் மற்றும் ஆர்கான்", "கார்பன் டை ஆக்சைடு மற்றும் நியான்"],
+        a: 1,
+        exp: "A fluorescent tube contains helium gas and neon gas, while a sign bulb contains neon gas."
+    },
+    // 4
+    {
+        qE: "Which state of matter is made up of free electrons and positively charged ions called cations?",
+        qT: "கட்டற்ற எலக்ட்ரான்கள் மற்றும் நேர்மின் அயனிகளால் ஆன பருப்பொருளின் நிலை எது?",
+        oE: ["Gas", "Liquid", "Plasma", "Bose-Einstein Condensate"],
+        oT: ["வாயு", "திரவம்", "பிளாஸ்மா", "போஸ்-ஐன்ஸ்டீன் சுருக்கம்"],
+        a: 2,
+        exp: "Plasma is the fourth state of matter made by heating a gas until electrons escape the nuclei, forming free electrons and positively charged ions."
+    },
+    // 5
+    {
+        qE: "Bose-Einstein Condensate is formed by cooling bosons to temperatures very near which value?",
+        qT: "போஸ்-ஐன்ஸ்டீன் சுருக்கம் என்பது போசான்களை எந்த வெப்பநிலைக்கு மிக அருகில் குளிர்விப்பதன் மூலம் உருவாகிறது?",
+        oE: ["0°C", "-100°C", "-273.15°C", "-373.15°C"],
+        oT: ["0°C", "-100°C", "-273.15°C", "-373.15°C"],
+        a: 2,
+        exp: "Bose-Einstein Condensate is the fifth state of matter formed by cooling bosons very near absolute zero, which is 0 Kelvin or -273.15°C."
+    },
+    // 6
+    {
+        qE: "The process of melting, where a solid changes into a liquid state, is known as what?",
+        qT: "திண்ம நிலை திரவ நிலையாக மாறும் உருகுதல் செயல்முறை எவ்வாறு அழைக்கப்படுகிறது?",
+        oE: ["Condensation", "Fusion", "Sublimation", "Evaporation"],
+        oT: ["ஆவி சுருங்குதல்", "உருகுதல் (Fusion)", "பதங்கமாதல்", "ஆவியாதல்"],
+        a: 1,
+        exp: "The change of a solid state into a liquid state is called fusion."
+    },
+    // 7
+    {
+        qE: "What happens to the melting point of a substance in the presence of impurities?",
+        qT: "மாசுக்கள் கலந்திருக்கும்போது ஒரு பொருளின் உருகுநிலை என்னவாகும்?",
+        oE: ["It increases", "It decreases", "It remains constant", "It becomes zero"],
+        oT: ["அதிகரிக்கும்", "குறையும்", "மாறாமல் இருக்கும்", "பூஜ்ஜியமாகும்"],
+        a: 1,
+        exp: "The melting point of a substance decreases in the presence of impurities, whereas its boiling point increases."
+    },
+    // 8
+    {
+        qE: "The direct conversion of a substance from the solid phase to the gas phase without passing through the liquid phase is called what?",
+        qT: "ஒரு பொருள் திரவ நிலைக்குச் செல்லாமல் திண்ம நிலையிலிருந்து நேரடியாக வாயு நிலைக்கு மாறும் நிகழ்வு எவ்வாறு அழைக்கப்படுகிறது?",
+        oE: ["Vapourisation", "Condensation", "Sublimation", "Fusion"],
+        oT: ["ஆவியாக்கல்", "ஆவி சுருங்குதல்", "பதங்கமாதல்", "உருகுதல்"],
+        a: 2,
+        exp: "Sublimation is the direct conversion from solid to gas without an intermediate liquid phase, seen in camphor, naphthalene, ammonium chloride, and iodine."
+    },
+    // 9
+    {
+        qE: "Which of the following is an example of a substance that undergoes sublimation?",
+        qT: "பின்வருவனவற்றில் பதங்கமாதலுக்கு உட்படும் பொருளுக்கு உதாரணம் எது?",
+        oE: ["Common salt", "Sugar", "Ammonium chloride", "Iron"],
+        oT: ["சாதாரண உப்பு", "சர்க்கரை", "அம்மோனியம் குளோரைடு", "இரும்பு"],
+        a: 2,
+        exp: "Camphor, naphthalene, ammonium chloride, and iodine are classic examples of sublimates."
+    },
+    // 10
+    {
+        qE: "Why does it take more time to cook food at high altitudes?",
+        qT: "அதிக உயரமான இடங்களில் உணவு சமைக்க ஏன் அதிக நேரம் தேவைப்படுகிறது?",
+        oE: ["Boiling point of water increases", "Boiling point of water decreases", "Atmospheric pressure increases", "Latent heat becomes zero"],
+        oT: ["நீரின் கொதிநிலை அதிகரிக்கிறது", "நீரின் கொதிநிலை குறைகிறது", "வளிமண்டல அழுத்தம் அதிகரிக்கிறது", "உள்ளுறை வெப்பம் பூஜ்ஜியமாகிறது"],
+        a: 1,
+        exp: "At high altitudes, atmospheric pressure is lower, so the boiling point of water drops below 100°C and more time is required to cook food."
+    },
+    // 11
+    {
+        qE: "Why does food cook faster inside a pressure cooker?",
+        qT: "பிரஷர் குக்கரில் உணவு ஏன் விரைவாக வேகுகிறது?",
+        oE: ["Low pressure lowers the boiling point", "High pressure increases the boiling point of water", "It eliminates latent heat of fusion", "It prevents vapourisation"],
+        oT: ["குறைந்த அழுத்தம் கொதிநிலையைக் குறைக்கிறது", "அதிக அழுத்தம் நீரின் கொதிநிலையை உயர்த்துகிறது", "இது உருகுதலின் உள்ளுறை வெப்பத்தை நீக்குகிறது", "இது ஆவியாக்கலைத் தடுக்கிறது"],
+        a: 1,
+        exp: "Inside a pressure cooker, the boiling point of water rises due to high pressure, so less time is required to cook food."
+    },
+    // 12
+    {
+        qE: "What happens to the boiling point of a liquid in the presence of impurities?",
+        qT: "மாசுக்கள் இருக்கும்போது ஒரு திரவத்தின் கொதிநிலை என்னவாகும்?",
+        oE: ["It decreases", "It increases", "It stays unchanged", "It drops to 0°C"],
+        oT: ["குறையும்", "அதிகரிக்கும்", "மாறாது", "0°C ஆகக் குறையும்"],
+        a: 1,
+        exp: "The boiling point of a liquid increases in the presence of impurities."
+    },
+    // 13
+    {
+        qE: "Why do we feel cool when nail polish remover or spirit is kept on our palm?",
+        qT: "நெயில் பாலிஷ் ரிமூவர் அல்லது ஸ்பிரிட்டை உள்ளங்கையில் வைக்கும்போது ஏன் குளிர்ச்சியாக உணர்கிறோம்?",
+        oE: ["Sublimation releases heat", "Evaporation produces cooling", "Condensation absorbs heat", "Fusion increases temperature"],
+        oT: ["பதங்கமாதல் வெப்பத்தை வெளியிடுகிறது", "ஆவியாதல் குளிர்ச்சியை ஏற்படுத்துகிறது", "ஆவி சுருங்குதல் வெப்பத்தை உறிஞ்சுகிறது", "உருகுதல் வெப்பநிலையை அதிகரிக்கிறது"],
+        a: 1,
+        exp: "Evaporation is the conversion of a liquid into vapour below its boiling point and it produces a cooling effect."
+    },
+    // 14
+    {
+        qE: "What is the process of conversion of a gas into a liquid called?",
+        qT: "வாயு திரவமாக மாறும் செயல்முறை எவ்வாறு அழைக்கப்படுகிறது?",
+        oE: ["Evaporation", "Sublimation", "Condensation", "Fusion"],
+        oT: ["ஆவியாதல்", "பதங்கமாதல்", "ஆவி சுருங்குதல்", "உருகுதல்"],
+        a: 2,
+        exp: "Condensation is the process of conversion of a gas into a liquid."
+    },
+    // 15
+    {
+        qE: "What does the word 'latent' mean in the term 'latent heat'?",
+        qT: "'உள்ளுறை வெப்பம்' என்பதில் 'லேட்டன்ட்' (Latent) என்ற சொல்லின் பொருள் என்ன?",
+        oE: ["Extreme", "Hidden", "Surface", "Kinetic"],
+        oT: ["அதிகபட்சம்", "மறைந்திருக்கும்", "மேற்பரப்பு", "இயக்க"],
+        a: 1,
+        exp: "The word 'latent' means hidden. Latent heat is absorbed or released during a change of state at constant temperature."
+    },
+    // 16
+    {
+        qE: "Why do particles in water at 0°C have more energy than particles in ice at the same temperature?",
+        qT: "0°C வெப்பநிலையில் உள்ள பனிக்கட்டித் துகள்களை விட அதே வெப்பநிலையில் உள்ள நீர்த் துகள்கள் ஏன் அதிக ஆற்றலைக் கொண்டுள்ளன?",
+        oE: ["Due to atmospheric pressure", "Due to latent heat of fusion", "Due to latent heat of vapourisation", "Due to sublimation"],
+        oT: ["வளிமண்டல அழுத்தத்தின் காரணமாக", "உருகுதலின் உள்ளுறை வெப்பத்தின் காரணமாக", "ஆவியாதலின் உள்ளுறை வெப்பத்தின் காரணமாக", "பதங்கமாதலின் காரணமாக"],
+        a: 1,
+        exp: "Water at 0°C has absorbed the latent heat of fusion needed to convert solid ice into liquid water at the same temperature."
+    },
+    // 17
+    {
+        qE: "Why does the temperature of a boiling liquid remain constant during boiling?",
+        qT: "ஒரு திரவம் கொதிக்கும்போது அதன் வெப்பநிலை ஏன் மாறாமல் நிலையாக உள்ளது?",
+        oE: ["Due to latent heat of fusion", "Due to latent heat of vapourisation", "Due to condensation", "Due to low pressure"],
+        oT: ["உருகுதலின் உள்ளுறை வெப்பத்தால்", "ஆவியாதலின் உள்ளுறை வெப்பத்தால்", "ஆவி சுருங்குதலால்", "குறைந்த அழுத்தத்தால்"],
+        a: 1,
+        exp: "During boiling, the heat supplied is used as latent heat of vapourisation to change the state from liquid to gas without raising the temperature."
+    },
+    // 18
+    {
+        qE: "Which gas law states that the volume of a gas varies inversely with pressure at constant temperature?",
+        qT: "மாறா வெப்பநிலையில் ஒரு வாயுவின் கன அளவு அதன் அழுத்தத்திற்கு எதிர்விகிதத்தில் இருக்கும் என்று கூறும் விதி எது?",
+        oE: ["Charles's Law", "Boyle's Law", "Gay-Lussac's Law", "Avogadro's Law"],
+        oT: ["சார்லஸ் விதி", "பாயில் விதி", "கே-லூசாக் விதி", "அவகாட்ரோ விதி"],
+        a: 1,
+        exp: "Boyle's Law (Pressure-Volume Law) states that V is inversely proportional to P at constant temperature and mass (PV = Constant)."
+    },
+    // 19
+    {
+        qE: "Charles's Law gives the relationship between which two quantities at constant pressure?",
+        qT: "மாறா அழுத்தத்தில் எந்த இரு அளவுகளுக்கு இடையிலான தொடர்பை சார்லஸ் விதி விளக்குகிறது?",
+        oE: ["Pressure and Volume", "Temperature and Volume", "Pressure and Temperature", "Volume and Moles"],
+        oT: ["அழுத்தம் மற்றும் கன அளவு", "வெப்பநிலை மற்றும் கன அளவு", "அழுத்தம் மற்றும் வெப்பநிலை", "கன அளவு மற்றும் மோல்கள்"],
+        a: 1,
+        exp: "Charles's Law (Temperature-Volume Law) states that at constant pressure, the volume of a gas is directly proportional to its Kelvin temperature."
+    },
+    // 20
+    {
+        qE: "According to Gay-Lussac's Law, which physical quantity is held constant while pressure varies directly with Kelvin temperature?",
+        qT: "கே-லூசாக் விதியின்படி, அழுத்தம் கெல்வின் வெப்பநிலைக்கு நேர்விகிதத்தில் இருக்கும்போது எந்த இயற்பியல் அளவு மாறாமல் இருக்கும்?",
+        oE: ["Pressure", "Temperature", "Volume", "Density"],
+        oT: ["அழுத்தம்", "வெப்பநிலை", "கன அளவு", "அடர்த்தி"],
+        a: 2,
+        exp: "Gay-Lussac's Law (Pressure-Temperature Law) states that the pressure of a gas held at constant volume is directly proportional to its Kelvin temperature."
+    },
+    // 21
+    {
+        qE: "Which law describes the relationship between the volume of a gas and its amount in moles at constant temperature and pressure?",
+        qT: "மாறா வெப்பநிலை மற்றும் அழுத்தத்தில் ஒரு வாயுவின் கன அளவுக்கும் அதன் மோல் எண்ணிக்கைக்கும் உள்ள தொடர்பை விளக்கும் விதி எது?",
+        oE: ["Boyle's Law", "Charles's Law", "Avogadro's Law", "Graham's Law"],
+        oT: ["பாயில் விதி", "சார்லஸ் விதி", "அவகாட்ரோ விதி", "கிரஹாம் விதி"],
+        a: 2,
+        exp: "Avogadro's Law (Volume-Amount Law) states that V is directly proportional to n (number of moles) at constant temperature and pressure."
+    },
+    // 22
+    {
+        qE: "According to Graham's Law of Diffusion, the rate of diffusion of a gas is inversely proportional to what?",
+        qT: "கிரஹாம் விரவல் விதியின்படி, ஒரு வாயுவின் விரவல் வீதம் எதற்கு எதிர்விகிதத்தில் இருக்கும்?",
+        oE: ["Molar mass", "Square of molar mass", "Square root of molar mass", "Cube root of molar mass"],
+        oT: ["மோலார் நிறை", "மோலார் நிறையின் வர்க்கம்", "மோலார் நிறையின் வர்க்கமூலம்", "மோலார் நிறையின் கனமூலம்"],
+        a: 2,
+        exp: "Graham's Law states that the rate of diffusion or effusion (r) is inversely proportional to the square root of its molar mass (M)."
+    },
+    // 23
+    {
+        qE: "The movement of a gas through a tiny hole into an open chamber is specifically called what?",
+        qT: "ஒரு சிறிய துளை வழியாக வாயு திறந்த அறைக்குள் நகரும் நிகழ்வு எவ்வாறு அழைக்கப்படுகிறது?",
+        oE: ["Diffusion", "Effusion", "Condensation", "Dialysis"],
+        oT: ["விரவல்", "வெளிப்பாய்தல் (Effusion)", "ஆவி சுருங்குதல்", "டயாலிசிஸ்"],
+        a: 1,
+        exp: "Diffusion is the spreading of a gas throughout a volume, while effusion is the movement of a gas through a tiny hole into an open chamber."
+    },
+    // 24
+    {
+        qE: "Which law states that the total pressure of a mixture of non-reacting gases equals the sum of their individual partial pressures?",
+        qT: "வினைபுரியாத வாயுக்களின் கலவையின் மொத்த அழுத்தம் அவற்றின் தனிப்பட்ட பகுதி அழுத்தங்களின் கூடுதலுக்குச் சமம் என்று கூறும் விதி எது?",
+        oE: ["Ideal Gas Law", "Dalton's Law of Partial Pressures", "Graham's Law", "Gay-Lussac's Law"],
+        oT: ["நல்லியல்பு வாயு விதி", "டால்டனின் பகுதி அழுத்த விதி", "கிரஹாம் விதி", "கே-லூசாக் விதி"],
+        a: 1,
+        exp: "Dalton's Law of Partial Pressures states that Ptotal = Pa + Pb + Pc + ... for a mixture of non-reacting gases."
+    },
+    // 25
+    {
+        qE: "Out of the 118 elements known at present, how many occur naturally?",
+        qT: "தற்போது அறியப்பட்டுள்ள 118 தனிமங்களில் எத்தனை தனிமங்கள் இயற்கையாகக் கிடைக்கின்றன?",
+        oE: ["88", "90", "92", "94"],
+        oT: ["88", "90", "92", "94"],
+        a: 3,
+        exp: "Out of 118 known elements at present, 94 are natural."
+    },
+    // 26
+    {
+        qE: "Which two elements are liquid at room temperature?",
+        qT: "அறை வெப்பநிலையில் திரவ நிலையில் உள்ள இரண்டு தனிமங்கள் எவை?",
+        oE: ["Mercury and iodine", "Mercury and bromine", "Sodium and bromine", "Gallium and chlorine"],
+        oT: ["பாதரசம் மற்றும் அயோடின்", "பாதரசம் மற்றும் புரோமின்", "சோடியம் மற்றும் புரோமின்", "காலியம் மற்றும் குளோரின்"],
+        a: 1,
+        exp: "Mercury (Hg) and bromine (Br2) are the two elements that exist in the liquid state at room temperature."
+    },
+    // 27
+    {
+        qE: "Which is the correct descending order of abundance of elements in the Earth's crust?",
+        qT: "பூமியின் மேலோட்டில் உள்ள தனிமங்களின் அளவின் சரியான இறங்குவரிசை எது?",
+        oE: ["Oxygen > Aluminium > Silicon > Iron", "Oxygen > Silicon > Aluminium > Iron", "Silicon > Oxygen > Iron > Aluminium", "Oxygen > Carbon > Silicon > Iron"],
+        oT: ["ஆக்ஸிஜன் > அலுமினியம் > சிலிக்கான் > இரும்பு", "ஆக்ஸிஜன் > சிலிக்கான் > அலுமினியம் > இரும்பு", "சிலிக்கான் > ஆக்ஸிஜன் > இரும்பு > அலுமினியம்", "ஆக்ஸிஜன் > கார்பன் > சிலிக்கான் > இரும்பு"],
+        a: 1,
+        exp: "The order of abundance of elements in the Earth's crust is Oxygen > Silicon > Aluminium > Iron > Calcium."
+    },
+    // 28
+    {
+        qE: "Which is the second most abundant element in the human body after oxygen?",
+        qT: "மனித உடலில் ஆக்ஸிஜனுக்கு அடுத்தபடியாக அதிக அளவில் உள்ள இரண்டாவது தனிமம் எது?",
+        oE: ["Hydrogen", "Nitrogen", "Carbon", "Calcium"],
+        oT: ["ஹைட்ரஜன்", "நைட்ரஜன்", "கார்பன்", "கால்சியம்"],
+        a: 2,
+        exp: "The order of abundance of elements in the human body is Oxygen > Carbon > Hydrogen > Nitrogen."
+    },
+    // 29
+    {
+        qE: "Who proposed the Law of Conservation of Mass, stating that matter can neither be created nor destroyed?",
+        qT: "பருப்பொருளை ஆக்கவோ அழிக்கவோ முடியாது என்ற நிறை அழிவின்மை விதியை வழங்கியவர் யார்?",
+        oE: ["John Dalton", "Lavoisier", "Avogadro", "Boyle"],
+        oT: ["ஜான் டால்டன்", "லவாய்சியர்", "அவகாட்ரோ", "பாயில்"],
+        a: 1,
+        exp: "The Law of Conservation of Mass was given by Lavoisier."
+    },
+    // 30
+    {
+        qE: "Which of the following is defined as a pure substance composed of two or more elements chemically combined in a fixed proportion?",
+        qT: "இரண்டு அல்லது அதற்கு மேற்பட்ட தனிமங்கள் குறிப்பிட்ட விகிதத்தில் வேதியியல் ரீதியாக இணைந்து உருவாகும் தூய பொருள் எது?",
+        oE: ["Mixture", "Compound", "Suspension", "Colloid"],
+        oT: ["கலவை", "சேர்மம்", "தொங்கல்", "கூழ்மம்"],
+        a: 1,
+        exp: "A compound is a pure substance made of two or more elements chemically combined in a fixed proportion, such as water, sugar, salt, and silica."
+    },
+    // 31
+    {
+        qE: "What is the smallest particle of an element or compound that is capable of independent existence and shows all its properties?",
+        qT: "தனித்து இயங்கக்கூடிய மற்றும் ஒரு தனிமம் அல்லது சேர்மத்தின் அனைத்துப் பண்புகளையும் வெளிப்படுத்தும் மிகச்சிறிய துகள் எது?",
+        oE: ["Atom", "Molecule", "Proton", "Electron"],
+        oT: ["அணு", "மூலக்கூறு", "புரோட்டான்", "எலக்ட்ரான்"],
+        a: 1,
+        exp: "A molecule is a group of two or more chemically bonded atoms capable of independent existence and exhibiting all properties of the substance."
+    },
+    // 32
+    {
+        qE: "What kind of change occurs when a piece of paper is cut into four square pieces?",
+        qT: "ஒரு காகிதத் துண்டை நான்கு சதுரத் துண்டுகளாக வெட்டும்போது எந்த வகையான மாற்றம் நிகழ்கிறது?",
+        oE: ["Chemical change", "Physical change", "Nuclear change", "Coagulation"],
+        oT: ["வேதியியல் மாற்றம்", "இயற்பியல் மாற்றம்", "அணுக்கரு மாற்றம்", "கூழ்மத் திரிதல்"],
+        a: 1,
+        exp: "Cutting paper changes only its shape and size without forming any new substance, so it is a physical change."
+    },
+    // 33
+    {
+        qE: "What is the particle size of the solute in a true solution?",
+        qT: "ஒரு உண்மைக் கரைசலில் உள்ள கரைபொருளின் துகள் அளவு என்ன?",
+        oE: ["Less than 1 nm", "1 nm to 1000 nm", "Greater than 1000 nm", "Equal to 100 nm"],
+        oT: ["1 nm-க்கு குறைவானது", "1 nm முதல் 1000 nm வரை", "1000 nm-க்கு அதிகமானது", "100 nm-க்கு சமமானது"],
+        a: 0,
+        exp: "In a true solution, solute particles have a size less than 1 nm (10^-9 m) and form a homogeneous mixture."
+    },
+    // 34
+    {
+        qE: "What is the particle size range of a colloidal solution?",
+        qT: "ஒரு கூழ்மக் கரைசலின் துகள் அளவு வரம்பு என்ன?",
+        oE: ["Less than 1 nm", "1 nm to 1000 nm", "Greater than 1000 nm", "Greater than 10000 nm"],
+        oT: ["1 nm-க்கு குறைவானது", "1 nm முதல் 1000 nm வரை", "1000 nm-க்கு அதிகமானது", "10000 nm-க்கு அதிகமானது"],
+        a: 1,
+        exp: "Colloidal solutions are heterogeneous mixtures with particle sizes ranging between 1 nm and 1000 nm."
+    },
+    // 35
+    {
+        qE: "What is the appearance of a colloidal solution compared to a true solution and a suspension?",
+        qT: "உண்மைக் கரைசல் மற்றும் தொங்கலுடன் ஒப்பிடும்போது கூழ்மக் கரைசலின் தோற்றம் எவ்வாறு இருக்கும்?",
+        oE: ["Transparent", "Translucent", "Opaque", "Crystalline"],
+        oT: ["ஒளி ஊடுருவும்", "பகுதி ஒளி ஊடுருவும்", "ஒளி ஊடுருவாத", "படிக வடிவ"],
+        a: 1,
+        exp: "True solutions are transparent, colloidal solutions are translucent, and suspensions are opaque."
+    },
+    // 36
+    {
+        qE: "Which instrument can be used to study colloidal particles that cannot be seen with the naked eye?",
+        qT: "வெறும் கண்ணால் காண முடியாத கூழ்மத் துகள்களை ஆய்வு செய்யப் பயன்படும் கருவி எது?",
+        oE: ["Simple magnifying glass", "Ultra-microscope", "Telescope", "Periscope"],
+        oT: ["சாதாரண உருப்பெருக்கி", "மீநுண்ணோக்கி", "தொலைநோக்கி", "பெரிஸ்கோப்"],
+        a: 1,
+        exp: "Colloidal particles are not visible to the naked eye but can be studied through an ultra-microscope."
+    },
+    // 37
+    {
+        qE: "Which property of colloidal particles explains their diffusion behaviour through filter paper and parchment paper?",
+        qT: "வடிகட்டித் தாள் மற்றும் பார்ச்மென்ட் தாள் வழியாக கூழ்மத் துகள்களின் ஊடுருவல் பண்பு எது?",
+        oE: ["Pass through both rapidly", "Pass through filter paper but not parchment paper", "Pass through parchment paper but not filter paper", "Do not pass through either"],
+        oT: ["இரண்டின் வழியாகவும் வேகமாகச் செல்லும்", "வடிகட்டித் தாள் வழியாகச் செல்லும் ஆனால் பார்ச்மென்ட் தாள் வழியாகச் செல்லாது", "பார்ச்மென்ட் தாள் வழியாகச் செல்லும் ஆனால் வடிகட்டித் தாள் வழியாகச் செல்லாது", "எதன் வழியாகவும் செல்லாது"],
+        a: 1,
+        exp: "Colloidal particles pass through ordinary filter paper but cannot pass through parchment paper."
+    },
+    // 38
+    {
+        qE: "Why does the sky appear blue due to suspended dust particles in the air?",
+        qT: "காற்றில் மிதக்கும் தூசித் துகள்களால் வானம் ஏன் நீல நிறமாகத் தோன்றுகிறது?",
+        oE: ["Reflection of light", "Scattering of light", "Refraction of light", "Absorption of light"],
+        oT: ["ஒளி எதிரொளிப்பு", "ஒளிச் சிதறல்", "ஒளி விலகல்", "ஒளி உறிஞ்சுதல்"],
+        a: 1,
+        exp: "The blue colour of the sky is due to the scattering of light by dust particles suspended in the air."
+    },
+    // 39
+    {
+        qE: "How can colloidal solutions be coagulated?",
+        qT: "கூழ்மக் கரைசல்களை எவ்வாறு திரியச் செய்யலாம் (Coagulate)?",
+        oE: ["By adding distilled water", "By adding an electrolyte", "By simple filtration", "By cooling to 0°C"],
+        oT: ["வடிகட்டிய நீரைச் சேர்ப்பதன் மூலம்", "ஒரு மின்பகுளியைச் சேர்ப்பதன் மூலம்", "சாதாரண வடிகட்டுதல் மூலம்", "0°C-க்கு குளிர்விப்பதன் மூலம்"],
+        a: 1,
+        exp: "Colloidal solutions are coagulated by adding an electrolyte."
+    },
+    // 40
+    {
+        qE: "By which method are colloidal solutions purified, a principle also used in artificial kidney machines to purify blood?",
+        qT: "செயற்கை சிறுநீரக இயந்திரத்தில் இரத்தத்தைச் சுத்திகரிக்கவும், கூழ்மக் கரைசல்களைத் தூய்மைப்படுத்தவும் பயன்படும் முறை எது?",
+        oE: ["Distillation", "Dialysis", "Sublimation", "Evaporation"],
+        oT: ["காய்ச்சி வடித்தல்", "டயாலிசிஸ்", "பதங்கமாதல்", "ஆவியாதல்"],
+        a: 1,
+        exp: "Colloidal solutions are purified by dialysis, which is also used for blood purification in artificial kidney machines."
+    },
+    // 41
+    {
+        qE: "Which chemical compound is used to stop bleeding by coagulation?",
+        qT: "இரத்தப்போக்கை உறையச் செய்து நிறுத்தப் பயன்படும் வேதிச் சேர்மம் எது?",
+        oE: ["NaCl", "FeCl3", "H2SO4", "CaCO3"],
+        oT: ["NaCl", "FeCl3", "H2SO4", "CaCO3"],
+        a: 1,
+        exp: "Coagulation is used in stopping bleeding by FeCl3, purifying water by alum, and forming deltas at the junction of a river and sea."
+    },
+    // 42
+    {
+        qE: "Fog, clouds, and mist are examples of which type of colloid?",
+        qT: "மூடுபனி, மேகங்கள் மற்றும் பனித்துளி ஆகியவை எந்த வகை கூழ்மத்திற்கு உதாரணங்கள்?",
+        oE: ["Foam", "Emulsion", "Aerosol", "Gel"],
+        oT: ["நுரை", "பால்மம்", "ஏரோசால்", "ஜெல்"],
+        a: 2,
+        exp: "Fog, clouds, and mist are Aerosols, where the dispersed phase is liquid and the dispersion medium is gas."
+    },
+    // 43
+    {
+        qE: "In smoke and automobile exhaust, what are the dispersed phase and dispersion medium respectively?",
+        qT: "புகை மற்றும் வாகனப் புகையில், பரவல் நிலைமை மற்றும் பரவல் ஊடகம் முறையே எவை?",
+        oE: ["Liquid in gas", "Solid in gas", "Gas in solid", "Solid in liquid"],
+        oT: ["வாயுவில் திரவம்", "வாயுவில் திண்மம்", "திண்மத்தில் வாயு", "திரவத்தில் திண்மம்"],
+        a: 1,
+        exp: "Smoke and automobile exhaust are solid aerosols consisting of solid particles dispersed in gas."
+    },
+    // 44
+    {
+        qE: "Milk and face-cream belong to which category of colloids?",
+        qT: "பால் மற்றும் முகக் கிரீம் ஆகியவை எந்த வகை கூழ்மத்தைச் சேர்ந்தவை?",
+        oE: ["Sol", "Gel", "Emulsion", "Foam"],
+        oT: ["சால்", "ஜெல்", "பால்மம்", "நுரை"],
+        a: 2,
+        exp: "Milk and face-cream are Emulsions, in which both the dispersed phase and dispersion medium are liquids."
+    },
+    // 45
+    {
+        qE: "Shaving cream is an example of which type of colloid?",
+        qT: "ஷேவிங் கிரீம் எந்த வகை கூழ்மத்திற்கு உதாரணம்?",
+        oE: ["Emulsion", "Foam", "Sol", "Gel"],
+        oT: ["பால்மம்", "நுரை", "சால்", "ஜெல்"],
+        a: 1,
+        exp: "Shaving cream is a Foam, where gas is dispersed in a liquid dispersion medium."
+    },
+    // 46
+    {
+        qE: "Milk of magnesia and mud are examples of which type of colloid?",
+        qT: "மெக்னீசியா பால்மம் மற்றும் சேறு ஆகியவை எந்த வகை கூழ்மத்திற்கு உதாரணங்கள்?",
+        oE: ["Emulsion", "Gel", "Sol", "Solid sol"],
+        oT: ["பால்மம்", "ஜெல்", "சால்", "திண்ம சால்"],
+        a: 2,
+        exp: "Milk of magnesia and mud are Sols, where a solid is dispersed in a liquid medium."
+    },
+    // 47
+    {
+        qE: "Jelly, cheese, and butter are examples of which type of colloid?",
+        qT: "ஜெல்லி, பாலாடைக்கட்டி மற்றும் வெண்ணெய் ஆகியவை எந்த வகை கூழ்மத்திற்கு உதாரணங்கள்?",
+        oE: ["Foam", "Emulsion", "Gel", "Solid sol"],
+        oT: ["நுரை", "பால்மம்", "ஜெல்", "திண்ம சால்"],
+        a: 2,
+        exp: "Jelly, cheese, and butter are Gels, where the dispersed phase is liquid and the dispersion medium is solid."
+    },
+    // 48
+    {
+        qE: "Coloured gemstones and milky glass belong to which type of colloid?",
+        qT: "வண்ண ரத்தினக் கற்கள் மற்றும் பால் கண்ணாடி ஆகியவை எந்த வகை கூழ்மத்தைச் சேர்ந்தவை?",
+        oE: ["Gel", "Foam", "Sol", "Solid sol"],
+        oT: ["ஜெல்", "நுரை", "சால்", "திண்ம சால்"],
+        a: 3,
+        exp: "Coloured gemstones and milky glass are Solid sols, where both the dispersed phase and dispersion medium are solid."
+    },
+    // 49
+    {
+        qE: "In pumice stone, rubber, and sponge, what is the dispersed phase?",
+        qT: "பியூமிஸ் கல், ரப்பர் மற்றும் கடற்பஞ்சு ஆகியவற்றில் பரவல் நிலைமை எது?",
+        oE: ["Solid", "Liquid", "Gas", "Plasma"],
+        oT: ["திண்மம்", "திரவம்", "வாயு", "பிளாஸ்மா"],
+        a: 2,
+        exp: "Foam, rubber, sponge, and pumice are solid foams in which gas is the dispersed phase and solid is the dispersion medium."
+    },
+    // 50
+    {
+        qE: "Which separation technique works on the principle that denser particles are forced to the bottom and lighter particles stay at the top when spun rapidly?",
+        qT: "வேகமாகச் சுழற்றும்போது அதிக அடர்த்தி கொண்ட துகள்கள் அடியிலும், குறைந்த அடர்த்தி கொண்ட துகள்கள் மேலேயும் தங்கும் தத்துவத்தில் செயல்படும் பிரித்தல் முறை எது?",
+        oE: ["Sublimation", "Centrifugation", "Dialysis", "Condensation"],
+        oT: ["பதங்கமாதல்", "மையவிலக்கு முறை", "டயாலிசிஸ்", "ஆவி சுருங்குதல்"],
+        a: 1,
+        exp: "Centrifugation is used in diagnostic labs for blood/urine tests, separating butter from cream, and squeezing water from wet clothes in washing machines."
+    },
+    // 51
+    {
+        qE: "Who discovered the positron in 1932?",
+        qT: "1932-ஆம் ஆண்டு பாசிட்ரானைக் கண்டுபிடித்தவர் யார்?",
+        oE: ["James Chadwick", "Anderson", "Fermi", "Hideki Yukawa"],
+        oT: ["ஜேம்ஸ் சாட்விக்", "ஆண்டர்சன்", "ஃபெர்மி", "ஹிடெகி யுகாவா"],
+        a: 1,
+        exp: "Anderson discovered the positron in 1932, the same year James Chadwick discovered the neutron."
+    },
+    // 52
+    {
+        qE: "Which scientist discovered mesons in 1935?",
+        qT: "1935-ஆம் ஆண்டு மீசான்களைக் கண்டுபிடித்த விஞ்ஞானி யார்?",
+        oE: ["Fermi", "Hideki Yukawa", "Segre", "Anderson"],
+        oT: ["ஃபெர்மி", "ஹிடெகி யுகாவா", "செக்ரே", "ஆண்டர்சன்"],
+        a: 1,
+        exp: "Hideki Yukawa discovered mesons in 1935."
+    },
+    // 53
+    {
+        qE: "Who discovered the antiproton in 1955?",
+        qT: "1955-ஆம் ஆண்டு ஆன்டிபுரோட்டானைக் கண்டுபிடித்தவர் யார்?",
+        oE: ["Fermi", "Segre", "Anderson", "Cork and Association"],
+        oT: ["ஃபெர்மி", "செக்ரே", "ஆண்டர்சன்", "கார்க் மற்றும் குழுவினர்"],
+        a: 1,
+        exp: "Segre discovered the antiproton in 1955, while Cork and Association discovered the antineutron in 1956."
+    },
+    // 54
+    {
+        qE: "Who proposed the atomic theory in 1808 suggesting that atoms are indivisible solid spheres?",
+        qT: "அணுக்கள் பிரிக்க முடியாத திண்மக் கோளங்கள் என 1808-இல் அணுக் கொள்கையை முன்மொழிந்தவர் யார்?",
+        oE: ["J. J. Thomson", "John Dalton", "Rutherford", "Niels Bohr"],
+        oT: ["ஜே. ஜே. தாம்சன்", "ஜான் டால்டன்", "ரூதர்ஃபோர்டு", "நீல்ஸ் போர்"],
+        a: 1,
+        exp: "John Dalton proposed the atomic theory in 1808 describing atoms as indivisible solid spheres."
+    },
+    // 55
+    {
+        qE: "Which scientist compared the structure of an atom to negatively charged electrons embedded in a positively charged sphere like the seeds of a guava fruit?",
+        qT: "நேர்மின் கோளத்தில் எதிர்மின் எலக்ட்ரான்கள் கொய்யாப் பழத்தின் விதைகளைப் போலப் பதிந்துள்ளன எனக் கூறிய விஞ்ஞானி யார்?",
+        oE: ["John Dalton", "J. J. Thomson", "Rutherford", "Sommerfeld"],
+        oT: ["ஜான் டால்டன்", "ஜே. ஜே. தாம்சன்", "ரூதர்ஃபோர்டு", "சோமர்ஃபெல்ட்"],
+        a: 1,
+        exp: "J. J. Thomson proposed that electrons are embedded in a positively charged solid sphere like the seeds of a guava fruit."
+    },
+    // 56
+    {
+        qE: "Whose nuclear atomic model compared the nucleus to the sun and revolving electrons to planets?",
+        qT: "அணுக்கருவை சூரியனுடனும், சுற்றிவரும் எலக்ட்ரான்களைக் கோள்களுடனும் ஒப்பிட்ட அணு மாதிரி யாருடையது?",
+        oE: ["J. J. Thomson", "Rutherford", "Niels Bohr", "John Dalton"],
+        oT: ["ஜே. ஜே. தாம்சன்", "ரூதர்ஃபோர்டு", "நீல்ஸ் போர்", "ஜான் டால்டன்"],
+        a: 1,
+        exp: "Rutherford's nuclear atomic model resembled the solar system, with electrons referred to as planetary electrons."
+    },
+    // 57
+    {
+        qE: "Who introduced the concept of energy levels of atoms in 1913 based on the spectra of a hydrogen atom?",
+        qT: "ஹைட்ரஜன் அணுவின் நிறமாலையின் அடிப்படையில் 1913-இல் அணுக்களின் ஆற்றல் மட்டங்கள் என்ற கருத்தை அறிமுகப்படுத்தியவர் யார்?",
+        oE: ["Rutherford", "Niels Bohr", "Sommerfeld", "Max Planck"],
+        oT: ["ரூதர்ஃபோர்டு", "நீல்ஸ் போர்", "சோமர்ஃபெல்ட்", "மாக்ஸ் பிளாங்க்"],
+        a: 1,
+        exp: "In 1913, Niels Bohr proposed that electrons revolve in definite orbits with particular energy levels."
+    },
+    // 58
+    {
+        qE: "Who modified Bohr's atomic model in 1916 by introducing elliptical orbits and sub-energy levels?",
+        qT: "நீள்வட்ட சுற்றுப்பாதைகள் மற்றும் துணை ஆற்றல் மட்டங்களை அறிமுகப்படுத்தி 1916-இல் போரின் மாதிரியை மாற்றியமைத்தவர் யார்?",
+        oE: ["Rutherford", "Sommerfeld", "Burry", "Pauli"],
+        oT: ["ரூதர்ஃபோர்டு", "சோமர்ஃபெல்ட்", "பரி", "பாலி"],
+        a: 1,
+        exp: "In 1916, Sommerfeld modified Bohr's model by introducing elliptical orbits and defining sub-energy levels."
+    },
+    // 59
+    {
+        qE: "Which of the following is NOT one of the four quantum numbers used to distinguish orbitals?",
+        qT: "ஆர்பிட்டால்களை வேறுபடுத்தப் பயன்படும் நான்கு குவாண்டம் எண்களில் இல்லாதது எது?",
+        oE: ["Principal quantum number", "Azimuthal quantum number", "Nuclear quantum number", "Spin quantum number"],
+        oT: ["முதன்மை குவாண்டம் எண்", "கோண உந்த குவாண்டம் எண்", "அணுக்கரு குவாண்டம் எண்", "தற்சுழற்சி குவாண்டம் எண்"],
+        a: 2,
+        exp: "The four quantum numbers are Principal, Azimuthal, Magnetic, and Spin quantum numbers."
+    },
+    // 60
+    {
+        qE: "Which scientist discovered cathode rays?",
+        qT: "கேத்தோடு கதிர்களைக் கண்டுபிடித்த விஞ்ஞானி யார்?",
+        oE: ["Sir Julius Plucker", "Eugen Goldstein", "James Chadwick", "Robert Millikan"],
+        oT: ["சர் ஜூலியஸ் பிளக்கர்", "யூஜின் கோல்ட்ஸ்டீன்", "ஜேம்ஸ் சாட்விக்", "ராபர்ட் மில்லிகன்"],
+        a: 0,
+        exp: "Cathode rays were discovered by Sir Julius Plucker, and the electron was discovered in cathode ray experiments by J. J. Thomson in 1897."
+    },
+    // 61
+    {
+        qE: "What is the mass of an electron in kilograms?",
+        qT: "ஒரு எலக்ட்ரானின் நிறை கிலோகிராமில் எவ்வளவு?",
+        oE: ["9.11 × 10^-31 kg", "1.672 × 10^-27 kg", "1.6 × 10^-19 kg", "6.626 × 10^-34 kg"],
+        oT: ["9.11 × 10^-31 கிலோ", "1.672 × 10^-27 கிலோ", "1.6 × 10^-19 கிலோ", "6.626 × 10^-34 கிலோ"],
+        a: 0,
+        exp: "The mass of an electron is 9.11 × 10^-31 kg or 0.000543 amu."
+    },
+    // 62
+    {
+        qE: "By which experiment was the charge of an electron (-1.6 × 10^-19 C) determined?",
+        qT: "எலக்ட்ரானின் மின்னூட்டம் (-1.6 × 10^-19 C) எந்தச் சோதனையின் மூலம் கண்டறியப்பட்டது?",
+        oE: ["Alpha-particle scattering experiment", "Millikan oil drop experiment", "Cathode ray tube experiment", "Hydrogen spectrum experiment"],
+        oT: ["ஆல்பா-துகள் சிதறல் சோதனை", "மில்லிகன் எண்ணெய்த் துளி சோதனை", "கேத்தோடு கதிர் குழாய் சோதனை", "ஹைட்ரஜன் நிறமாலை சோதனை"],
+        a: 1,
+        exp: "The charge of an electron (-1.6 × 10^-19 C) was determined by the Millikan oil drop experiment."
+    },
+    // 63
+    {
+        qE: "Who discovered canal rays (positive rays) in a gas discharge in 1886?",
+        qT: "1886-இல் வாயு மின்னிறக்கத்தில் கால்வாய்க் கதிர்களை (நேர்மின் கதிர்கள்) கண்டுபிடித்தவர் யார்?",
+        oE: ["J. J. Thomson", "Eugen Goldstein", "James Chadwick", "Sir Julius Plucker"],
+        oT: ["ஜே. ஜே. தாம்சன்", "யூஜின் கோல்ட்ஸ்டீன்", "ஜேம்ஸ் சாட்விக்", "சர் ஜூலியஸ் பிளக்கர்"],
+        a: 1,
+        exp: "Eugen Goldstein discovered canal rays (anode rays / positive rays) in 1886 and is credited with discovering the proton."
+    },
+    // 64
+    {
+        qE: "How many times heavier is a proton than an electron?",
+        qT: "ஒரு புரோட்டானின் நிறை எலக்ட்ரானின் நிறையை விட எத்தனை மடங்கு அதிகமானது?",
+        oE: ["1000 times", "1672 times", "1836 times", "2000 times"],
+        oT: ["1000 மடங்கு", "1672 மடங்கு", "1836 மடங்கு", "2000 மடங்கு"],
+        a: 2,
+        exp: "A proton has a mass of 1.672 × 10^-27 kg (1.00763 amu), which is 1836 times that of an electron."
+    },
+    // 65
+    {
+        qE: "What is the electrical charge of a neutron?",
+        qT: "நியூட்ரானின் மின்னூட்டம் என்ன?",
+        oE: ["+1.6 × 10^-19 C", "-1.6 × 10^-19 C", "Zero", "+1 C"],
+        oT: ["+1.6 × 10^-19 C", "-1.6 × 10^-19 C", "பூஜ்ஜியம்", "+1 C"],
+        a: 2,
+        exp: "Discovered by James Chadwick, a neutron has zero charge and a mass of 1.00867 u."
+    },
+    // 66
+    {
+        qE: "Which is the only atom in which neutrons are not present?",
+        qT: "நியூட்ரான்கள் இல்லாத ஒரே அணு எது?",
+        oE: ["Helium", "Hydrogen", "Lithium", "Carbon"],
+        oT: ["ஹீலியம்", "ஹைட்ரஜன்", "லித்தியம்", "கார்பன்"],
+        a: 1,
+        exp: "Ordinary hydrogen (Protium, 1H1) is the only atom that does not contain any neutrons in its nucleus."
+    },
+    // 67
+    {
+        qE: "Which force binds the negatively charged electrons with the positively charged nucleus?",
+        qT: "எதிர்மின் எலக்ட்ரான்களை அணுக்கருவுடன் பிணைக்கும் விசை எது?",
+        oE: ["Gravitational force", "Electromagnetic force", "Centrifugal force", "Frictional force"],
+        oT: ["ஈர்ப்பு விசை", "மின்காந்த விசை", "மையவிலக்கு விசை", "உராய்வு விசை"],
+        a: 1,
+        exp: "Electromagnetic forces bind the electrons with the nucleus."
+    },
+    // 68
+    {
+        qE: "What are the protons and neutrons present inside the nucleus collectively called?",
+        qT: "அணுக்கருவுக்குள் இருக்கும் புரோட்டான்கள் மற்றும் நியூட்ரான்கள் கூட்டாக எவ்வாறு அழைக்கப்படுகின்றன?",
+        oE: ["Positrons", "Nucleons", "Bosons", "Mesons"],
+        oT: ["பாசிட்ரான்கள்", "நியூக்ளியான்கள்", "போசான்கள்", "மீசான்கள்"],
+        a: 1,
+        exp: "Protons and neutrons residing in the nucleus are collectively called nucleons, and their total count equals the mass number (A)."
+    },
+    // 69
+    {
+        qE: "Which isotope of hydrogen is radioactive?",
+        qT: "ஹைட்ரஜனின் எந்த ஐசோடோப்பு கதிரியக்கத் தன்மை கொண்டது?",
+        oE: ["Protium", "Deuterium", "Tritium", "Hydrogen-1"],
+        oT: ["புரோட்டியம்", "டியூட்டீரியம்", "டிரிட்டியம்", "ஹைட்ரஜன்-1"],
+        a: 2,
+        exp: "Hydrogen has three isotopes: Protium (1H1), Deuterium (1H2), and Tritium (1H3), of which Tritium is radioactive."
+    },
+    // 70
+    {
+        qE: "Which element has the maximum number of isotopes?",
+        qT: "அதிக எண்ணிக்கையிலான ஐசோடோப்புகளைக் கொண்ட தனிமம் எது?",
+        oE: ["Hydrogen", "Carbon", "Polonium", "Lead"],
+        oT: ["ஹைட்ரஜன்", "கார்பன்", "பொலோனியம்", "ஈயம்"],
+        a: 2,
+        exp: "Polonium has the maximum number of isotopes. Hydrogen (H-1) is the lightest isotope and lead-208 is the heaviest."
+    },
+    // 71
+    {
+        qE: "Atoms of different elements having the same mass number but different atomic numbers, such as Ar-40, K-40, and Ca-40, are called what?",
+        qT: "ஒத்த நிறை எண்ணையும் வெவ்வேறு அணு எண்களையும் கொண்ட Ar-40, K-40, Ca-40 போன்ற வெவ்வேறு தனிமங்களின் அணுக்கள் எவ்வாறு அழைக்கப்படுகின்றன?",
+        oE: ["Isotopes", "Isobars", "Isotones", "Isomers"],
+        oT: ["ஐசோடோப்புகள்", "ஐசோபார்கள்", "ஐசோடோன்கள்", "ஐசோமர்கள்"],
+        a: 1,
+        exp: "Isobars are atoms of different elements having the same mass number (A) but different atomic numbers (Z)."
+    },
+    // 72
+    {
+        qE: "Why are 11Na23 and 12Mg24 classified as isotones?",
+        qT: "11Na23 மற்றும் 12Mg24 ஆகியவை ஏன் ஐசோடோன்கள் என வகைப்படுத்தப்படுகின்றன?",
+        oE: ["Both have the same atomic number", "Both have the same mass number", "Both have 12 neutrons", "Both have 12 protons"],
+        oT: ["இரண்டும் ஒரே அணு எண்ணைக் கொண்டுள்ளன", "இரண்டும் ஒரே நிறை எண்ணைக் கொண்டுள்ளன", "இரண்டும் 12 நியூட்ரான்களைக் கொண்டுள்ளன", "இரண்டும் 12 புரோட்டான்களைக் கொண்டுள்ளன"],
+        a: 2,
+        exp: "Isotones have the same number of neutrons: 23 - 11 = 12 neutrons in Na and 24 - 12 = 12 neutrons in Mg."
+    },
+    // 73
+    {
+        qE: "How many neutrons are present in each of the isotone pair 15P31 and 14Si30?",
+        qT: "15P31 மற்றும் 14Si30 என்ற ஐசோடோன் இணையில் ஒவ்வொன்றிலும் எத்தனை நியூட்ரான்கள் உள்ளன?",
+        oE: ["14", "15", "16", "30"],
+        oT: ["14", "15", "16", "30"],
+        a: 2,
+        exp: "Both 15P31 (31 - 15 = 16) and 14Si30 (30 - 14 = 16) contain 16 neutrons."
+    },
+    // 74
+    {
+        qE: "According to Planck's Quantum Theory, what is the smallest discrete amount of energy emitted or absorbed as electromagnetic radiation called?",
+        qT: "பிளாங்கின் குவாண்டம் கொள்கையின்படி, மின்காந்த கதிர்வீச்சாக உமிழப்படும் அல்லது உறிஞ்சப்படும் மிகச்சிறிய தனித்த ஆற்றல் அளவு எவ்வாறு அழைக்கப்படுகிறது?",
+        oE: ["Nucleon", "Quantum", "Positron", "Meson"],
+        oT: ["நியூக்ளியான்", "குவாண்டம்", "பாசிட்ரான்", "மீசான்"],
+        a: 1,
+        exp: "According to Planck's Quantum Theory, the smallest discrete packet of electromagnetic energy emitted or absorbed is called a quantum."
+    },
+    // 75
+    {
+        qE: "What is the value of Planck's constant (h) in the equation E = hv?",
+        qT: "E = hv என்ற சமன்பாட்டில் பிளாங்க் மாறிலியின் (h) மதிப்பு என்ன?",
+        oE: ["9.11 × 10^-31 J s", "1.6 × 10^-19 J s", "6.626 × 10^-34 J s", "1.672 × 10^-27 J s"],
+        oT: ["9.11 × 10^-31 J s", "1.6 × 10^-19 J s", "6.626 × 10^-34 J s", "1.672 × 10^-27 J s"],
+        a: 2,
+        exp: "In Planck's equation E = hv, energy is directly proportional to frequency and Planck's constant h = 6.626 × 10^-34 J s."
+    },
+
+    // ================= 5 RRB GROUP D PYQ QUESTIONS (Q76 - Q80) =================
+    // 76
+    {
+        qE: "Which of the following mixtures shows the Tyndall effect, while its solute particles settle down on standing?",
+        qT: "பின்வரும் கலவைகளில் டிண்டால் விளைவைக் காட்டி, அசைக்காமல் வைக்கும்போது அதன் துகள்கள் அடியில் தங்கும் கலவை எது?",
+        oE: ["True solution", "Colloid", "Suspension", "Compound"],
+        oT: ["உண்மைக் கரைசல்", "கூழ்மம்", "தொங்கல்", "சேர்மம்"],
+        a: 2,
+        exp: "RRB Group D PYQ: Suspensions are unstable heterogeneous mixtures that can scatter light (Tyndall effect) while their large particles settle at the bottom under gravity when left undisturbed."
+    },
+    // 77
+    {
+        qE: "Common salt dissolves easily in water without significantly increasing the water level because of which reason?",
+        qT: "சாதாரண உப்பு நீரில் கரையும்போது நீரின் மட்டம் கணிசமாக உயராமல் எளிதில் கரைவதற்குக் காரணம் என்ன?",
+        oE: ["Salt melts into liquid at room temperature", "Water has spaces between its particles for salt particles to enter", "Salt evaporates rapidly inside water", "Salt is less dense than water"],
+        oT: ["உப்பு அறை வெப்பநிலையில் திரவமாக உருகுகிறது", "நீர்த் துகள்களுக்கு இடையே உள்ள இடைவெளியில் உப்புத் துகள்கள் புகுந்துகொள்கின்றன", "உப்பு நீருக்குள் வேகமாக ஆவியாகிறது", "உப்பு நீரை விடக் குறைந்த அடர்த்தி கொண்டது"],
+        a: 1,
+        exp: "RRB Group D PYQ: Particles of matter have spaces between them, allowing dissolved salt ions to occupy the intermolecular spaces of water."
+    },
+    // 78
+    {
+        qE: "Water kept in an earthen pot becomes cool during summer due to which phenomenon?",
+        qT: "கோடைக்காலத்தில் மண் பானையில் வைக்கப்படும் நீர் எந்த நிகழ்வின் காரணமாகக் குளிர்ச்சியாகிறது?",
+        oE: ["Condensation", "Evaporation", "Sublimation", "Diffusion"],
+        oT: ["ஆவி சுருங்குதல்", "ஆவியாதல்", "பதங்கமாதல்", "விரவல்"],
+        a: 1,
+        exp: "RRB Group D PYQ: Water seeps through tiny pores of the earthen pot and evaporates by absorbing latent heat from the remaining water, producing cooling."
+    },
+    // 79
+    {
+        qE: "According to the Bohr-Bury scheme (2n^2 rule), what is the maximum number of electrons that can be accommodated in the M-shell (n = 3)?",
+        qT: "போர்-பரி விதியின்படி (2n^2), M-கூட்டில் (n = 3) அதிகபட்சமாக எத்தனை எலக்ட்ரான்கள் நிரப்பப்பட முடியும்?",
+        oE: ["2", "8", "18", "32"],
+        oT: ["2", "8", "18", "32"],
+        a: 2,
+        exp: "RRB Group D PYQ: Using the 2n^2 formula for M-shell (n = 3), maximum electrons = 2 × (3)^2 = 18."
+    },
+    // 80
+    {
+        qE: "Which separation technique is used to separate different coloured dyes present in ink?",
+        qT: "மையில் உள்ள பல்வேறு வண்ணச் சாயங்களைப் பிரிக்கப் பயன்படும் பிரித்தல் நுட்பம் எது?",
+        oE: ["Centrifugation", "Sublimation", "Chromatography", "Magnetic separation"],
+        oT: ["மையவிலக்கு முறை", "பதங்கமாதல்", "வண்ணப்பிரிகை முறை", "காந்தப் பிரிப்பு முறை"],
+        a: 2,
+        exp: "RRB Group D PYQ: Chromatography is used to separate solutes such as dyes in ink that dissolve in the same solvent."
+    },
+
+    // ================= 20 STATEMENT-BASED QUESTIONS FROM NOTES (Q81 - Q100) =================
+    // 81 (Ans: 0 - Only 1)
+    {
+        qE: "Consider the following statements:\n1. Solids have both a definite volume and a definite shape.\n2. Gases have a definite volume but no definite shape.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. திண்மங்களுக்கு நிலையான கன அளவும் நிலையான வடிவமும் உண்டு.\n2. வாயுக்களுக்கு நிலையான கன அளவு உண்டு ஆனால் நிலையான வடிவம் இல்லை.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 0,
+        exp: "Statement 1 is correct. Statement 2 is incorrect because gases have neither a definite volume nor a definite shape (liquids have definite volume and no definite shape)."
+    },
+    // 82 (Ans: 2 - Both 1 and 2)
+    {
+        qE: "Consider the following statements:\n1. Plasma is considered the fourth state of matter.\n2. Bose-Einstein Condensate is considered the fifth state of matter.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. பிளாஸ்மா பருப்பொருளின் நான்காவது நிலையாகக் கருதப்படுகிறது.\n2. போஸ்-ஐன்ஸ்டீன் சுருக்கம் பருப்பொருளின் ஐந்தாவது நிலையாகக் கருதப்படுகிறது.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 2,
+        exp: "Both statements are correct. The five states of matter are Solid, Liquid, Gas, Plasma, and Bose-Einstein Condensate."
+    },
+    // 83 (Ans: 1 - Only 2)
+    {
+        qE: "Consider the following statements:\n1. The melting point of ice increases in the presence of impurities.\n2. The boiling point of water increases in the presence of impurities.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. மாசுக்கள் இருக்கும்போது பனிக்கட்டியின் உருகுநிலை அதிகரிக்கிறது.\n2. மாசுக்கள் இருக்கும்போது நீரின் கொதிநிலை அதிகரிக்கிறது.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 1,
+        exp: "Statement 1 is incorrect because melting point decreases in the presence of impurities. Statement 2 is correct."
+    },
+    // 84 (Ans: 3 - Neither 1 nor 2)
+    {
+        qE: "Consider the following statements:\n1. Evaporation occurs only at the boiling point of a liquid.\n2. Increasing the surface area decreases the rate of evaporation.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. ஆவியாதல் ஒரு திரவத்தின் கொதிநிலையில் மட்டுமே நிகழ்கிறது.\n2. மேற்பரப்புப் பரப்பளவை அதிகரிப்பது ஆவியாதல் வீதத்தைக் குறைக்கிறது.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 3,
+        exp: "Both statements are incorrect. Evaporation occurs at any temperature below the boiling point, and it increases with an increase in surface area and temperature."
+    },
+    // 85 (Ans: 0 - Only 1)
+    {
+        qE: "Consider the following statements:\n1. In Boyle's Law, when pressure goes up at constant temperature, the volume of a gas goes down.\n2. In Charles's Law, when temperature goes up at constant pressure, the volume of a gas goes down.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. பாயில் விதியில், மாறா வெப்பநிலையில் அழுத்தம் அதிகரிக்கும்போது வாயுவின் கன அளவு குறைகிறது.\n2. சார்லஸ் விதியில், மாறா அழுத்தத்தில் வெப்பநிலை அதிகரிக்கும்போது வாயுவின் கன அளவு குறைகிறது.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 0,
+        exp: "Statement 1 is correct (V is inversely proportional to P). Statement 2 is incorrect because in Charles's Law, volume increases directly with Kelvin temperature."
+    },
+    // 86 (Ans: 1 - Only 2)
+    {
+        qE: "Consider the following statements:\n1. All mixtures are classified as pure substances.\n2. All elements and compounds are classified as pure substances.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. அனைத்துக் கலவைகளும் தூய பொருட்கள் என வகைப்படுத்தப்படுகின்றன.\n2. அனைத்துத் தனிமங்களும் சேர்மங்களும் தூய பொருட்கள் என வகைப்படுத்தப்படுகின்றன.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 1,
+        exp: "Statement 1 is incorrect because mixtures are impure substances. Statement 2 is correct."
+    },
+    // 87 (Ans: 3 - Neither 1 nor 2)
+    {
+        qE: "Consider the following statements:\n1. In a physical change, one or more new substances are always formed.\n2. A chemical change is generally reversible and does not form any new substance.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. இயற்பியல் மாற்றத்தில் ஒன்று அல்லது அதற்கு மேற்பட்ட புதிய பொருட்கள் எப்போதும் உருவாகின்றன.\n2. வேதியியல் மாற்றம் பொதுவாக மீளக்கூடியது மற்றும் புதிய பொருளை உருவாக்காது.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 3,
+        exp: "Both statements are incorrect. No new substance is formed in a physical change, whereas one or more new substances are formed in a chemical change."
+    },
+    // 88 (Ans: 2 - Both 1 and 2)
+    {
+        qE: "Consider the following statements:\n1. A true solution is a homogeneous mixture and does not show the Tyndall effect.\n2. A colloidal solution is a heterogeneous mixture and shows both the Tyndall effect and Brownian movement.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. உண்மைக் கரைசல் ஒரு ஒருபடித்தான கலவையாகும் மற்றும் டிண்டால் விளைவைக் காட்டாது.\n2. கூழ்மக் கரைசல் ஒரு பலபடித்தான கலவையாகும் மற்றும் டிண்டால் விளைவு, பிரௌனியன் இயக்கம் ஆகிய இரண்டையும் காட்டுகிறது.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 2,
+        exp: "Both statements are correct based on the properties of true solutions and colloidal solutions."
+    },
+    // 89 (Ans: 0 - Only 1)
+    {
+        qE: "Consider the following statements:\n1. In a colloidal solution, the continuous phase in which particles are dispersed is called the dispersion medium.\n2. Particles of a suspension are smaller than 1 nm and cannot be seen by the naked eye.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. கூழ்மக் கரைசலில் துகள்கள் பரவியுள்ள தொடர்ச்சியான நிலைமை பரவல் ஊடகம் எனப்படும்.\n2. தொங்கலின் துகள்கள் 1 nm-க்கும் சிறியவை மற்றும் வெறும் கண்ணால் காண முடியாது.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 0,
+        exp: "Statement 1 is correct. Statement 2 is incorrect because suspension particles are greater than 1000 nm and are big enough to be seen by the naked eye."
+    },
+    // 90 (Ans: 2 - Both 1 and 2)
+    {
+        qE: "Consider the following statements:\n1. Purification of water by alum is an application of coagulation.\n2. Formation of deltas at the junction of a river and sea is an example of coagulation.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. படிகாரத்தால் நீரைச் சுத்திகரிப்பது கூழ்மத் திரிதலின் பயன்பாடாகும்.\n2. ஆறும் கடலும் சேரும் இடத்தில் டெல்டா உருவாவது கூழ்மத் திரிதலுக்கு உதாரணமாகும்.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 2,
+        exp: "Both statements are correct applications of coagulation."
+    },
+    // 91 (Ans: 1 - Only 2)
+    {
+        qE: "Consider the following statements:\n1. Butter and cheese are examples of emulsions.\n2. Milk and face-cream are examples of emulsions.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. வெண்ணெய் மற்றும் பாலாடைக்கட்டி ஆகியவை பால்மத்திற்கு உதாரணங்கள்.\n2. பால் மற்றும் முகக் கிரீம் ஆகியவை பால்மத்திற்கு உதாரணங்கள்.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 1,
+        exp: "Statement 1 is incorrect because butter, cheese, and jelly are Gels (liquid in solid). Statement 2 is correct (liquid in liquid)."
+    },
+    // 92 (Ans: 3 - Neither 1 nor 2)
+    {
+        qE: "Consider the following statements:\n1. Particles of a true solution cannot pass through parchment paper.\n2. Particles of a suspension pass easily through ordinary filter paper.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. உண்மைக் கரைசலின் துகள்கள் பார்ச்மென்ட் தாள் வழியாகச் செல்ல முடியாது.\n2. தொங்கலின் துகள்கள் சாதாரண வடிகட்டித் தாள் வழியாக எளிதில் செல்லும்.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 3,
+        exp: "Both statements are incorrect. True solution particles diffuse rapidly through both filter paper and parchment paper, whereas suspension particles do not pass through either."
+    },
+    // 93 (Ans: 0 - Only 1)
+    {
+        qE: "Consider the following statements:\n1. J. J. Thomson's atomic model explained that atoms are electrically neutral, but could not explain the alpha-particle scattering experiment.\n2. Rutherford's atomic model successfully explained why atoms are completely stable.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. ஜே. ஜே. தாம்சனின் அணு மாதிரி அணுக்கள் மின்நடுநிலையானவை என்பதை விளக்கியது, ஆனால் ஆல்பா-துகள் சிதறல் சோதனையை விளக்க முடியவில்லை.\n2. ரூதர்ஃபோர்டின் அணு மாதிரி அணுக்கள் ஏன் முழுமையாக நிலையானவை என்பதை வெற்றிகரமாக விளக்கியது.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 0,
+        exp: "Statement 1 is correct. Statement 2 is incorrect because Rutherford's model was discarded as it implied revolving electrons would lose energy and fall into the nucleus, making the atom unstable."
+    },
+    // 94 (Ans: 1 - Only 2)
+    {
+        qE: "Consider the following statements:\n1. Anode rays originate directly from the anode and travel faster than cathode rays.\n2. Anode rays are positively charged and have a velocity less than cathode rays.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. ஆனோடு கதிர்கள் நேரடியாக ஆனோடிலிருந்து உருவாகி கேத்தோடு கதிர்களை விட வேகமாகப் பயணிக்கின்றன.\n2. ஆனோடு கதிர்கள் நேர்மின்னூட்டம் கொண்டவை மற்றும் கேத்தோடு கதிர்களை விடக் குறைந்த திசைவேகம் கொண்டவை.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 1,
+        exp: "Statement 1 is incorrect because anode rays do not originate from the anode and are slower than cathode rays. Statement 2 is correct."
+    },
+    // 95 (Ans: 2 - Both 1 and 2)
+    {
+        qE: "Consider the following statements:\n1. Positron is the antiparticle of the electron.\n2. In a neutral atom, the number of electrons is equal to the number of protons.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. பாசிட்ரான் என்பது எலக்ட்ரானின் எதிர்த்துகள் ஆகும்.\n2. ஒரு நடுநிலை அணுவில் எலக்ட்ரான்களின் எண்ணிக்கை புரோட்டான்களின் எண்ணிக்கைக்குச் சமம்.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 2,
+        exp: "Both statements are correct."
+    },
+    // 96 (Ans: 3 - Neither 1 nor 2)
+    {
+        qE: "Consider the following statements:\n1. If the number of electrons is less than the number of protons, the atom carries a negative charge.\n2. If the number of electrons is more than the number of protons, the atom carries a positive charge.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. எலக்ட்ரான்களின் எண்ணிக்கை புரோட்டான்களை விடக் குறைவாக இருந்தால் அணு எதிர்மின்னூட்டம் பெறும்.\n2. எலக்ட்ரான்களின் எண்ணிக்கை புரோட்டான்களை விட அதிகமாக இருந்தால் அணு நேர்மின்னூட்டம் பெறும்.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 3,
+        exp: "Both statements are incorrect because the charges are reversed: fewer electrons than protons give a positive charge, and more electrons than protons give a negative charge."
+    },
+    // 97 (Ans: 0 - Only 1)
+    {
+        qE: "Consider the following statements:\n1. The alpha-particle scattering experiment suggested that most of the part of an atom is empty.\n2. The mass number of an atom is denoted by Z and equals the number of protons alone.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. அணுவின் பெரும்பகுதி வெற்றிடமாக உள்ளது என்பதை ஆல்பா-துகள் சிதறல் சோதனை உணர்த்தியது.\n2. அணுவின் நிறை எண் Z எனக் குறிக்கப்படுகிறது மற்றும் அது புரோட்டான்களின் எண்ணிக்கைக்கு மட்டுமே சமம்.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 0,
+        exp: "Statement 1 is correct. Statement 2 is incorrect because mass number is denoted by A (protons + neutrons), while atomic number is denoted by Z."
+    },
+    // 98 (Ans: 2 - Both 1 and 2)
+    {
+        qE: "Consider the following statements:\n1. Isotopes of an element have the same atomic number but different mass numbers.\n2. Isobars have the same mass number but different atomic numbers.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. ஒரு தனிமத்தின் ஐசோடோப்புகள் ஒரே அணு எண்ணையும் வெவ்வேறு நிறை எண்களையும் கொண்டுள்ளன.\n2. ஐசோபார்கள் ஒரே நிறை எண்ணையும் வெவ்வேறு அணு எண்களையும் கொண்டுள்ளன.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 2,
+        exp: "Both statements are correct definitions of isotopes and isobars."
+    },
+    // 99 (Ans: 1 - Only 2)
+    {
+        qE: "Consider the following statements:\n1. Isotones are atoms of the same element having the same number of protons.\n2. According to Planck's Quantum Theory, the energy of radiation is directly proportional to its frequency.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. ஐசோடோன்கள் என்பவை ஒரே எண்ணிக்கையிலான புரோட்டான்களைக் கொண்ட ஒரே தனிமத்தின் அணுக்கள் ஆகும்.\n2. பிளாங்கின் குவாண்டம் கொள்கையின்படி, கதிர்வீச்சின் ஆற்றல் அதன் அதிர்வெண்ணிற்கு நேர்விகிதத்தில் இருக்கும்.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 1,
+        exp: "Statement 1 is incorrect because isotones are atoms of different elements having the same number of neutrons. Statement 2 is correct (E = hv)."
+    },
+    // 100 (Ans: 3 - Neither 1 nor 2)
+    {
+        qE: "Consider the following statements:\n1. In the Earth's crust, carbon is the most abundant element.\n2. In the human body, silicon is the most abundant element.",
+        qT: "பின்வரும் கூற்றுகளைக் கவனியுங்கள்:\n1. பூமியின் மேலோட்டில் கார்பன் மிக அதிக அளவில் காணப்படும் தனிமமாகும்.\n2. மனித உடலில் சிலிக்கான் மிக அதிக அளவில் காணப்படும் தனிமமாகும்.",
+        oE: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+        oT: ["1 மட்டும்", "2 மட்டும்", "1 மற்றும் 2 இரண்டும்", "1 மற்றும் 2 இரண்டும் இல்லை"],
+        a: 3,
+        exp: "Both statements are incorrect. Oxygen is the most abundant element in both the Earth's crust and the human body."
+    }
+];
+
+let quizData = [];
+let currentQ = 0;
+let answers = [];
+let status = []; // 0: Not Visited, 1: Not Answered, 2: Answered, 3: Marked, 4: Answered & Marked
+
+// Shuffle array algorithm
+function shuffleArray(array) {
+    let shuffled = array.slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+// Switch Views
+function switchView(viewId) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(viewId).classList.add('active');
+}
+
+function startQuiz() {
+    quizData = shuffleArray(baseQuizData);
+   answers = new Array(quizData.length).fill(null);
+   status = new Array(quizData.length).fill(0);
+    
+    switchView('view-quiz');
+    
+    buildPalette();
+    loadQuestion(0);
+    startTimer();
+    
+    if(window.innerWidth <= 768) {
+        document.getElementById('close-palette-btn').style.display = 'block';
+    }
+}
+
+function buildPalette() {
+    const grid = document.getElementById('palette-grid');
+    grid.innerHTML = '';
+    for(let i=0; i<quizData.length; i++) {
+        let bubble = document.createElement('div');
+        bubble.className = 'q-bubble status-' + status[i];
+        bubble.innerText = (i+1);
+        bubble.id = 'pb-' + i;
+        bubble.onclick = () => jumpToQuestion(i);
+        grid.appendChild(bubble);
+    }
+}
+
+function syncAnswer() {
+    let selected = document.querySelector('input[name="opt"]:checked');
+    if(selected) {
+        answers[currentQ] = parseInt(selected.value);
+    } else {
+        answers[currentQ] = null;
+    }
+}
+
+function updatePaletteCSS() {
+    for(let i=0; i<quizData.length; i++) {
+        let bubble = document.getElementById('pb-' + i);
+        bubble.className = 'q-bubble status-' + status[i];
+        if(i === currentQ) bubble.classList.add('active');
+    }
+}
+
+function loadQuestion(index) {
+    if(status[currentQ] === 0) {
+        status[currentQ] = (answers[currentQ] !== null) ? 2 : 1;
+    }
+    
+    currentQ = index;
+    if(status[currentQ] === 0) status[currentQ] = 1;
+
+    document.getElementById('q-no').innerText = "Question " + (currentQ + 1);
+    
+    // Format statement questions with line breaks
+    let qTextEn = quizData[currentQ].qE.replace(/\n/g, "<br>");
+    let qTextTa = quizData[currentQ].qT.replace(/\n/g, "<br>");
+    
+    document.getElementById('q-text-en').innerHTML = qTextEn;
+    document.getElementById('q-text-ta').innerHTML = qTextTa;
+
+    let optHtml = '';
+    for(let i=0; i<4; i++) {
+        let checked = (answers[currentQ] === i) ? 'checked' : '';
+        optHtml += `
+            <label class="option-label">
+                <input type="radio" name="opt" value="${i}" ${checked} onchange="syncAnswer()">
+                <div>
+                    <div>${quizData[currentQ].oE[i]}</div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px;">${quizData[currentQ].oT[i]}</div>
+                </div>
+            </label>
+        `;
+    }
+    document.getElementById('options-container').innerHTML = optHtml;
+    
+    // Clear scroll position to top of container when moving to a new question
+    document.querySelector('.question-scroll-area').scrollTop = 0;
+    
+    updatePaletteCSS();
+}
+
+function jumpToQuestion(i) {
+    syncAnswer();
+    loadQuestion(i);
+    if(window.innerWidth <= 768) togglePalette();
+}
+
+function saveAndNext() {
+    syncAnswer();
+    status[currentQ] = (answers[currentQ] !== null) ? 2 : 1;
+    if(currentQ < quizData.length - 1) loadQuestion(currentQ + 1);
+    else updatePaletteCSS();
+}
+
+function markAndNext() {
+    syncAnswer();
+    status[currentQ] = (answers[currentQ] !== null) ? 4 : 3;
+    if(currentQ < quizData.length - 1) loadQuestion(currentQ + 1);
+    else updatePaletteCSS();
+}
+
+function clearResponse() {
+    answers[currentQ] = null;
+    status[currentQ] = 1;
+    loadQuestion(currentQ);
+}
+
+function prevQuestion() {
+    syncAnswer();
+    if(currentQ > 0) loadQuestion(currentQ - 1);
+}
+
+function togglePalette() {
+    document.getElementById('palette').classList.toggle('open');
+}
+
+// Timer Logic
+let timeLimit = 30 * 60; // 15 mins
+let timerInterval;
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeLimit--;
+        let m = Math.floor(timeLimit / 60).toString().padStart(2, '0');
+        let s = (timeLimit % 60).toString().padStart(2, '0');
+        document.getElementById('timer').innerText = m + ':' + s;
+        if(timeLimit <= 0) {
+            clearInterval(timerInterval);
+            submitExam();
+        }
+    }, 1000);
+}
+
+// Custom Submit Modals
+function showSubmitConfirm() {
+    syncAnswer();
+    let unattempted = answers.filter(a => a === null).length;
+    let warningTxt = document.getElementById('unanswered-warning');
+    if(unattempted > 0) {
+        warningTxt.innerText = `You have ${unattempted} unattempted questions!`;
+        warningTxt.style.display = 'block';
+    } else {
+        warningTxt.style.display = 'none';
+    }
+    document.getElementById('confirm-modal').style.display = 'flex';
+}
+
+function closeSubmitConfirm() {
+    document.getElementById('confirm-modal').style.display = 'none';
+}
+
+function submitExam() {
+    clearInterval(timerInterval);
+    document.getElementById('confirm-modal').style.display = 'none';
+    syncAnswer();
+    
+    let correct = 0, wrong = 0, unattempted = 0;
+    
+    quizData.forEach((q, i) => {
+        if(answers[i] === null) unattempted++;
+        else if(answers[i] === q.a) correct++;
+        else wrong++;
+    });
+    
+    let score = correct - (wrong * 0.3333);
+    
+    document.getElementById('res-score').innerText = score.toFixed(2);
+    document.getElementById('res-correct').innerText = correct;
+    document.getElementById('res-wrong').innerText = wrong;
+    document.getElementById('res-unattempted').innerText = unattempted;
+    document.getElementById('out-of-text').innerText = `(Out of ${quizData.length})`;
+    switchView('view-results');
+}
+
+// Detailed Review with Tabs
+function showDetailedReview() {
+    let htmlCorrect = '';
+    let htmlWrong = '';
+    let htmlUnattempted = '';
+    
+    quizData.forEach((q, i) => {
+        let isAttempted = answers[i] !== null;
+        let isCorrect = isAttempted && answers[i] === q.a;
+        let cssClass = !isAttempted ? 'unattempted' : (isCorrect ? 'correct' : 'wrong');
+        
+        let chosenText = isAttempted ? q.oE[answers[i]] : "None";
+        let correctText = q.oE[q.a];
+        
+        let qText = q.qE.replace(/\n/g, "<br>");
+        let tagHtml = !isAttempted ? `<span class="answer-tag tag-unattempted">Unattempted</span>` : 
+                      isCorrect ? `<span class="answer-tag tag-correct">Correct (+1.0)</span>` : 
+                      `<span class="answer-tag tag-wrong">Incorrect (-0.33)</span>`;
+                      
+        let explanationText = q.exp || `The correct answer is ${correctText}.`;
+        
+        let itemHtml = `
+            <div class="review-item ${cssClass}">
+                <strong style="font-size: 1.1rem; color: #fff;">Q${i+1}: ${qText}</strong><br>
+                ${tagHtml}
+                <div style="margin-top: 15px; font-size: 0.95rem; display: grid; gap: 8px;">
+                    <div><span style="color: var(--text-secondary)">Your Answer:</span> <span style="color: ${!isAttempted ? '#9e9e9e' : isCorrect ? 'var(--color-answered)' : 'var(--color-not-answered)'}">${chosenText}</span></div>
+                    <div><span style="color: var(--text-secondary)">Correct Answer:</span> <span style="color: var(--color-answered); font-weight: bold;">${correctText}</span></div>
+                </div>
+                <div class="explanation-box">
+                    <strong style="color: var(--primary-cyan);">Explanation:</strong><br>
+                    ${explanationText}
+                </div>
+            </div>
+        `;
+        
+        if (!isAttempted) htmlUnattempted += itemHtml;
+        else if (isCorrect) htmlCorrect += itemHtml;
+        else htmlWrong += itemHtml;
+    });
+    
+    // Inject Content
+    document.getElementById('review-content-correct').innerHTML = htmlCorrect || "<div style='text-align:center; padding: 30px; color: var(--text-secondary);'>No correct answers recorded in this session.</div>";
+    document.getElementById('review-content-wrong').innerHTML = htmlWrong || "<div style='text-align:center; padding: 30px; color: var(--color-answered); font-weight: bold;'>Amazing job! You had no incorrect answers!</div>";
+    document.getElementById('review-content-unattempted').innerHTML = htmlUnattempted || "<div style='text-align:center; padding: 30px; color: var(--text-secondary);'>You attempted every single question. Great effort!</div>";
+    
+    // Setup Tab counts
+    document.getElementById('tab-count-correct').innerText = document.getElementById('res-correct').innerText;
+    document.getElementById('tab-count-wrong').innerText = document.getElementById('res-wrong').innerText;
+    document.getElementById('tab-count-unattempted').innerText = document.getElementById('res-unattempted').innerText;
+    
+    // Display Section
+    document.getElementById('post-exam-actions').style.display = 'none';
+    document.getElementById('detailed-review-section').style.display = 'block';
+    
+    // Default to the first tab that has data
+    if (htmlWrong) switchTab('wrong');
+    else if (htmlCorrect) switchTab('correct');
+    else switchTab('unattempted');
+}
+
+function switchTab(tabId) {
+    // Reset buttons and content visibility
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    // Activate chosen tab
+    document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+    document.getElementById(`review-content-${tabId}`).classList.add('active');
+}
+</script>
+</body>
+</html>
